@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Callback;
 import lombok.Getter;
@@ -83,6 +84,9 @@ public class Controller {
 
     @FXML
     private TextField yesBindField;
+
+    @FXML
+    private TextField revertBindField;
 
     @FXML
     private Label statusLabel;
@@ -167,6 +171,8 @@ public class Controller {
             noBall(new ActionEvent());
         } else if(input.toCharArray()[0] == yesBindField.getText().toCharArray()[0]) {
             aBall(new ActionEvent());
+        } else if(input.toCharArray()[0] == revertBindField.getText().toCharArray()[0]) {
+            revert(new ActionEvent());
         }
         event.consume();
     }
@@ -222,9 +228,11 @@ public class Controller {
 
     @FXML
     void revert(ActionEvent event) {
-        Main.getCommandHistory().undo();
-        updateImages();
-        updateStatus();
+        if(Main.getCommandHistory().undoProperty().getValue()) {
+            Main.getCommandHistory().undo();
+            updateImages();
+            updateStatus();
+        }
     }
 
     @FXML

@@ -104,6 +104,8 @@
                                           <TextField fx:id="noBindField" maxWidth="30.0" promptText="x" text="x" />
                                           <Label text="Ball (Yes):" />
                                           <TextField fx:id="yesBindField" maxWidth="30.0" promptText="y" text="y" />
+                                          <Label text="Revert:" />
+                                          <TextField fx:id="revertBindField" maxWidth="30.0" promptText="r" text="r" />
                                        </children>
                                     </HBox>
                                     <Label fx:id="statusLabel" text="Status: ??/?? classified - positive: ??, negative: ??, ?? are marked for deletion." GridPane.rowIndex="1" />
