@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.InfoWindowController">
+   <children>
+      <VBox AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <VBox fx:id="vboxtext" maxWidth="400.0" minWidth="200.0" />
+            <Separator prefHeight="10.0" prefWidth="200.0" />
+            <HBox alignment="CENTER_RIGHT" spacing="4.0">
+               <children>
+                  <Button fx:id="cancel_button" cancelButton="true" mnemonicParsing="false" onAction="#cancelPressed" text="Cancel" visible="false">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="ok_button" minWidth="50.0" mnemonicParsing="false" onAction="#clickedClose" text="OK">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

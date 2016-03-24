@@ -2,10 +2,12 @@ package de.unibremen.bhuman.ptfc;
 
 import de.yabue.bakacore.Command.CommandHistory;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 
 /**
@@ -29,6 +31,15 @@ public class Main extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
         primaryStage.setScene(new Scene(fxmlLoader.load()));
         mainWindow = primaryStage;
+
+        primaryStage.setOnCloseRequest(event -> {
+            if(Controller.isChanges()) {
+                if(!InfoWindow.showConfirm("Discard changes?", "There are unsaved changes. Closing means losing all of them. Proceed?", mainWindow)) {
+                    event.consume();
+                }
+            }
+        });
+
         primaryStage.show();
     }
 
