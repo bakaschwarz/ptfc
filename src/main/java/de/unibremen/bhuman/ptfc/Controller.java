@@ -82,8 +82,19 @@ public class Controller {
     @Getter @Setter
     private static int index = 0;
 
+    @Getter @Setter
+    private static int positive = 0;
+
+    @Getter @Setter
+    private static int negative = 0;
+
+    @Getter @Setter
+    private static int delete = 0;
+
     @Getter
     private static boolean changes = false;
+
+
 
     @FXML
     void initialize() {
@@ -97,6 +108,7 @@ public class Controller {
             IsBallCommand isBallCommand = new IsBallCommand();
             Main.getCommandHistory().execute(isBallCommand);
             updateImages();
+            updateStatus();
             changes = true;
         }
     }
@@ -107,13 +119,20 @@ public class Controller {
             DeleteCommand deleteCommand = new DeleteCommand();
             Main.getCommandHistory().execute(deleteCommand);
             updateImages();
+            updateStatus();
             changes = true;
         }
     }
 
     @FXML
     void keybindInvoke(KeyEvent event) {
-
+        String input = event.getCharacter();
+        if(input.toCharArray()[0] == noBindField.getText().toCharArray()[0]) {
+            noBall(new ActionEvent());
+        } else if(input.toCharArray()[0] == yesBindField.getText().toCharArray()[0]) {
+            aBall(new ActionEvent());
+        }
+        event.consume();
     }
 
     @FXML
@@ -152,12 +171,13 @@ public class Controller {
             NoBallCommand noBallCommand = new NoBallCommand();
             Main.getCommandHistory().execute(noBallCommand);
             updateImages();
+            updateStatus();
             changes = true;
         }
     }
 
     ClassifiedImage getImageAtIndex(final int index) {
-        if(index >= 0 || index < imageList.size()) {
+        if(index >= 0 && index < imageList.size()) {
             return imageList.get(index);
         } else {
             return new ClassifiedImage();
@@ -168,6 +188,7 @@ public class Controller {
     void revert(ActionEvent event) {
         Main.getCommandHistory().undo();
         updateImages();
+        updateStatus();
     }
 
     @FXML
@@ -182,13 +203,23 @@ public class Controller {
         ClassifiedImage next = getImageAtIndex(index + 1);
 
         lastView.setImage(last.getImage());
-        lastLabel.setText(last.getPath() != null ? last.getPath().getName() : "---");
+        lastLabel.setText(last.getPath() != null ? String.format("Status: %s", last.getStatus()) : "---");
 
         currentView.setImage(current.getImage());
-        currentLabel.setText(current.getPath() != null ? current.getPath().getName() : "---");
+        currentLabel.setText(current.getPath() != null ? String.format("Status: %s", current.getStatus()) : "---");
 
         nextView.setImage(next.getImage());
-        nextLabel.setText(next.getPath() != null ? next.getPath().getName() : "---");
+        nextLabel.setText(next.getPath() != null ? String.format("Status: %s", next.getStatus()) : "---");
+    }
+
+    void updateStatus() {
+        statusLabel.setText(String.format("Status: %d/%d classified - positive: %d, negative: %d, %d are marked for deletion.",
+                index,
+                imageList.size(),
+                positive,
+                negative,
+                delete
+                ));
     }
 
 }

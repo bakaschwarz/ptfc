@@ -14,11 +14,13 @@ public class IsBallCommand extends FXCommand {
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());
         image.setStatus(Status.BALL);
         Controller.setIndex(Controller.getIndex() + 1);
+        Controller.setPositive(Controller.getPositive() + 1);
     }
 
     @Override
     public void undoAction() {
         Controller.setIndex(Controller.getIndex() - 1);
+        Controller.setPositive(Controller.getPositive() - 1);
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());
         image.setStatus(Status.NOTHING);
     }

@@ -37,7 +37,7 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
-                                          <ImageView fx:id="lastView" fitHeight="320.0" fitWidth="320.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="lastView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -47,15 +47,27 @@
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
-                                          <ImageView fx:id="nextView" fitHeight="320.0" fitWidth="320.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="nextView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </HBox>
                                     <Label text="Last:" />
                                     <Label text="Current:" GridPane.columnIndex="1" />
                                     <Label text="Next:" GridPane.columnIndex="2" />
-                                    <Label fx:id="lastLabel" text="&lt;Name&gt;" GridPane.rowIndex="2" />
-                                    <Label fx:id="currentLabel" text="&lt;Name&gt;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="nextLabel" text="&lt;Name&gt;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label fx:id="lastLabel" text="&lt;Name&gt;" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label fx:id="currentLabel" text="&lt;Name&gt;" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label fx:id="nextLabel" text="&lt;Name&gt;" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

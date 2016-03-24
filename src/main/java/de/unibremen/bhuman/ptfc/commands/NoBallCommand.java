@@ -12,11 +12,13 @@ public class NoBallCommand extends FXCommand {
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());
         image.setStatus(Status.NOBALL);
         Controller.setIndex(Controller.getIndex() + 1);
+        Controller.setNegative(Controller.getNegative() + 1);
     }
 
     @Override
     public void undoAction() {
         Controller.setIndex(Controller.getIndex() - 1);
+        Controller.setNegative(Controller.getNegative() - 1);
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());
         image.setStatus(Status.NOTHING);
     }

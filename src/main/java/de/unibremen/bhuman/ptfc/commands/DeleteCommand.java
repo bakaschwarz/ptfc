@@ -12,11 +12,13 @@ public class DeleteCommand extends FXCommand {
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());
         image.setStatus(Status.DELETE);
         Controller.setIndex(Controller.getIndex() + 1);
+        Controller.setDelete(Controller.getDelete() + 1);
     }
 
     @Override
     public void undoAction() {
         Controller.setIndex(Controller.getIndex() - 1);
+        Controller.setDelete(Controller.getDelete() - 1);
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());
         image.setStatus(Status.NOTHING);
     }
