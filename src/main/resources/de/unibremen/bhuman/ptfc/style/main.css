@@ -107,6 +107,14 @@
     -fx-background-color: crimson;
 }
 
+.generate-button {
+    -fx-background-color: #4386c4;
+    -fx-font-size: 42;
+}
+
+.generate-button:hover {
+    -fx-background-color: #479bdd;
+}
 .error-label {
     -fx-text-fill: #AA3939;
     -fx-font-size: 14;
