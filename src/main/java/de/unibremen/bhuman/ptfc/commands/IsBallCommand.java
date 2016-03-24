@@ -5,10 +5,8 @@ import de.unibremen.bhuman.ptfc.data.ClassifiedImage;
 import de.unibremen.bhuman.ptfc.data.Status;
 import de.yabue.bakacore.Command.FXCommand;
 
-/**
- * Created by baka on 24.03.16.
- */
 public class IsBallCommand extends FXCommand {
+
     @Override
     public void executeAction() {
         ClassifiedImage image = Controller.getImageList().get(Controller.getIndex());

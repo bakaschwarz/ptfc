@@ -96,7 +96,7 @@
                                 </rowConstraints>
                                  <children>
                                     <Label text="You don't like to click on buttons? You can bind a character such as 'a' to the buttons." />
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
                                        <children>
                                           <Label text="Ball (No):" />
                                           <TextField fx:id="noBindField" maxWidth="30.0" promptText="x" text="x" />
@@ -126,7 +126,7 @@
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
                                           <Button mnemonicParsing="false" onAction="#loadOutput" text="Load" />
-                                          <Button mnemonicParsing="false" onAction="#save" text="Save classified data" />
+                                          <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save classified data" />
                                        </children>
                                     </HBox>
                                  </children>

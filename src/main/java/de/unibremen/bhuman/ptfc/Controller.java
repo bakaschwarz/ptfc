@@ -4,6 +4,8 @@ import de.unibremen.bhuman.ptfc.commands.DeleteCommand;
 import de.unibremen.bhuman.ptfc.commands.IsBallCommand;
 import de.unibremen.bhuman.ptfc.commands.NoBallCommand;
 import de.unibremen.bhuman.ptfc.data.ClassifiedImage;
+import de.unibremen.bhuman.ptfc.data.Status;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,10 +16,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +56,9 @@ public class Controller {
 
     @FXML
     private Button deleteButton;
+
+    @FXML
+    private Button saveButton;
 
     @FXML
     private Button revertButton;
@@ -99,6 +107,7 @@ public class Controller {
     @FXML
     void initialize() {
         revertButton.disableProperty().bind(Main.getCommandHistory().undoProperty().not());
+        saveButton.disableProperty().bind(Bindings.and(outputField.textProperty().isEqualTo("").not(), inputField.textProperty().isEqualTo("").not()).not());
         imageList = new ArrayList<>();
     }
 
@@ -192,8 +201,21 @@ public class Controller {
     }
 
     @FXML
-    void save(ActionEvent event) {
-
+    void save(ActionEvent event) throws IOException {
+        for(ClassifiedImage image : imageList) {
+            if(image.getStatus() != Status.DELETE && image.getStatus() != Status.NOTHING) {
+                String out_name = getAFilename(image.getStatus());
+                File out_file = new File(outputPath.getAbsolutePath() + "/" + out_name);
+                FileUtils.copyFile(image.getPath(), out_file);
+                image.setStatus(Status.NOTHING);
+            }
+        }
+        index = 0;
+        positive = 0;
+        negative = 0;
+        delete = 0;
+        updateStatus();
+        updateImages();
         changes = false;
     }
 
@@ -222,4 +244,15 @@ public class Controller {
                 ));
     }
 
+    String getAFilename(Status ball) {
+        DateTime dt = new DateTime();
+        String filename = String.format(
+                "%s%s_%s_%s_%s.png",
+                ball == Status.BALL ? "" : "f_",
+                dt.getYear(),
+                dt.getMonthOfYear(),
+                dt.getDayOfMonth(),
+                dt.getMillisOfDay());
+        return filename;
+    }
 }
