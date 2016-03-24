@@ -160,7 +160,7 @@
                                     <Label text="Output filename:" />
                                     <TextField fx:id="trainNameField" promptText="train.data" />
                                     <Separator orientation="VERTICAL" prefHeight="200.0" prefWidth="50.0" visible="false" />
-                                    <TextField fx:id="trainOutPathField" prefWidth="400.0" promptText="/path/to/output" />
+                                    <TextField fx:id="trainOutPathField" editable="false" prefWidth="400.0" promptText="/path/to/output" />
                                     <Button mnemonicParsing="false" onAction="#setTrainOutPutPath" text="Set output folder" />
                                  </children>
                               </HBox>
