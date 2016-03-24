@@ -1,0 +1,138 @@
+.root {
+    -fx-base: #393a3b;
+    -fx-background: #393a3b;
+    -fx-highlight-text-fill: black;
+    -fx-accent: #C46502;
+    -fx-focus-color: #C46502;
+    -fx-background-image: url("bg.png");
+    -fx-font-family: "Open Sans";
+    /*-fx-control-inner-background: rgba(141, 173, 191, 0.46);*/
+}
+
+.root .scroll-bar {
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-background-image: url("header.png");
+}
+
+.root .scroll-bar:vertical {
+    -fx-pref-width: 20;
+}
+
+.root .scroll-bar:horizontal {
+    -fx-pref-height: 20;
+}
+
+.root .scroll-bar .thumb {
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-background-color: #393a3b;
+    -fx-border-width: 2;
+    -fx-border-color: #222324;
+    -fx-background-image: url("bg.png");
+}
+
+.root .scroll-bar .increment-button {
+    -fx-border-color: #222324;
+    -fx-border-width: 1;
+}
+
+.root .scroll-bar .decrement-button {
+    -fx-border-color: #222324;
+    -fx-border-width: 1;
+}
+
+@font-face {
+    font-family : 'Open Sans';
+    src: url("OpenSans-Regular.ttf");
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: #393a3b;
+    -fx-background-image: url("header.png");
+    -fx-effect: dropshadow(three-pass-box , rgba(0, 0, 0, 0.6) , 15 , 0.0 , 2 , 2);
+}
+
+.table-view .column-header {
+    -fx-background-color: #393a3b;
+    -fx-border-color: #222324;
+    -fx-background-image: url("header.png");
+}
+
+.table-view {
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+}
+
+
+.text-area {
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+}
+
+.text-field {
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+}
+
+.button {
+    -fx-background-color: #323334;
+    -fx-border-color: #222324;
+}
+
+.button:hover {
+    -fx-background-color: #424344;
+}
+
+.button:pressed {
+    -fx-background-color: #C46502;
+}
+
+.error-label {
+    -fx-text-fill: #AA3939;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.help-label {
+    -fx-text-fill: #647a8c;
+}
+
+.help-label:hover {
+    -fx-text-fill: #98bacd;
+}
+
+.help-label:pressed {
+    -fx-text-fill: #C46502;
+}
+
+.check-box .box{
+    -fx-background-image: url("header.png");
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-width: 1;
+    -fx-border-color: #222324;
+}
+
+.progress-bar > .track {
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-width: 1;
+    -fx-border-color: #222324;
+}
+
+.menu-bar {
+    -fx-background-image: url("menu.png");
+}
+
+.bottom-bar {
+    -fx-background-image: url("menu.png");
+}
+
+.titled-pane > .title {
+    -fx-background-image: url("menu.png");
+    -fx-border-radius: 0 0 0 0;
+    -fx-background-radius: 0 0 0 0;
+
+}
