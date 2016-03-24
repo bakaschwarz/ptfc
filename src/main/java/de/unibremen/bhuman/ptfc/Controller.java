@@ -131,6 +131,7 @@ public class Controller {
     private static boolean changes = false;
 
 
+    private int outputcounter = 0;
 
     @FXML
     void initialize() {
@@ -166,13 +167,15 @@ public class Controller {
 
     @FXML
     void keybindInvoke(KeyEvent event) {
-        String input = event.getCharacter();
-        if(input.toCharArray()[0] == noBindField.getText().toCharArray()[0]) {
-            noBall(new ActionEvent());
-        } else if(input.toCharArray()[0] == yesBindField.getText().toCharArray()[0]) {
-            aBall(new ActionEvent());
-        } else if(input.toCharArray()[0] == revertBindField.getText().toCharArray()[0]) {
-            revert(new ActionEvent());
+        if(index < imageList.size()) {
+            String input = event.getCharacter();
+            if (input.toCharArray()[0] == noBindField.getText().toCharArray()[0]) {
+                noBall(new ActionEvent());
+            } else if (input.toCharArray()[0] == yesBindField.getText().toCharArray()[0]) {
+                aBall(new ActionEvent());
+            } else if (input.toCharArray()[0] == revertBindField.getText().toCharArray()[0]) {
+                revert(new ActionEvent());
+            }
         }
         event.consume();
     }
@@ -244,6 +247,7 @@ public class Controller {
                 FileUtils.copyFile(image.getPath(), out_file);
                 image.setStatus(Status.NOTHING);
             }
+            outputcounter++;
         }
         index = 0;
         positive = 0;
@@ -251,6 +255,7 @@ public class Controller {
         delete = 0;
         updateStatus();
         updateImages();
+        outputcounter = 0;
         changes = false;
     }
 
@@ -282,12 +287,14 @@ public class Controller {
     String getAFilename(Status ball) {
         DateTime dt = new DateTime();
         String filename = String.format(
-                "%s%s_%s_%s_%s.png",
+                "%s%s_%s_%s_%s_%04d",
                 ball == Status.BALL ? "" : "f_",
                 dt.getYear(),
                 dt.getMonthOfYear(),
                 dt.getDayOfMonth(),
-                dt.getMillisOfDay());
+                dt.getMillisOfDay(),
+                outputcounter
+        );
         return filename;
     }
     //endregion
