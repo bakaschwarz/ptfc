@@ -184,30 +184,27 @@ public class Controller {
     void loadInput(ActionEvent event) throws FileNotFoundException {
         DirectoryChooser dc = new DirectoryChooser();
         inputPath = dc.showDialog(Main.getMainWindow());
-        inputField.setText(inputPath.getAbsolutePath());
-        imageList.clear();
-        for(File file : inputPath.listFiles()) {
-            if(FilenameUtils.getExtension(file.getName()).equals("png")) {
-                ClassifiedImage image = new ClassifiedImage(file);
-                imageList.add(image);
+        if(inputPath != null) {
+            inputField.setText(inputPath.getAbsolutePath());
+            imageList.clear();
+            for (File file : inputPath.listFiles()) {
+                if (FilenameUtils.getExtension(file.getName()).equals("png")) {
+                    ClassifiedImage image = new ClassifiedImage(file);
+                    imageList.add(image);
+                }
             }
+            updateImages();
+            updateStatus();
         }
-        lastView.setImage(null);
-        lastLabel.setText("---");
-        ClassifiedImage current = getImageAtIndex(0);
-        ClassifiedImage next = getImageAtIndex(1);
-        currentView.setImage(current.getImage());
-        nextView.setImage(next.getImage());
-
-        currentLabel.setText(current.getPath() != null ? current.getPath().getName() : "---");
-        nextLabel.setText(next.getPath() != null ? next.getPath().getName() : "---");
     }
 
     @FXML
     void loadOutput(ActionEvent event) {
         DirectoryChooser dc = new DirectoryChooser();
         outputPath = dc.showDialog(Main.getMainWindow());
-        outputField.setText(outputPath.getAbsolutePath());
+        if(outputPath != null) {
+            outputField.setText(outputPath.getAbsolutePath());
+        }
     }
 
     @FXML
