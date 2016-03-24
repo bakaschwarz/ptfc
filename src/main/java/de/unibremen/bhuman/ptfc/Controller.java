@@ -284,7 +284,7 @@ public class Controller {
     String getAFilename(Status ball) {
         DateTime dt = new DateTime();
         String filename = String.format(
-                "%s%s_%s_%s_%s_%04d",
+                "%s%s_%s_%s_%s_%04d.png",
                 ball == Status.BALL ? "" : "f_",
                 dt.getYear(),
                 dt.getMonthOfYear(),
