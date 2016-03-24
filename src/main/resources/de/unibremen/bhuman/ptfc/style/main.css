@@ -89,6 +89,24 @@
     -fx-background-color: #C46502;
 }
 
+.ball-button {
+    -fx-background-color: #98bacd;
+    -fx-font-size: 32;
+}
+
+.ball-button:hover {
+    -fx-background-color: deepskyblue;
+}
+
+.noball-button {
+    -fx-background-color: #AA3939;
+    -fx-font-size: 32;
+}
+
+.noball-button:hover {
+    -fx-background-color: crimson;
+}
+
 .error-label {
     -fx-text-fill: #AA3939;
     -fx-font-size: 14;
