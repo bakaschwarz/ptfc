@@ -1,49 +1,35 @@
-/**
-package de.unibremen.bhuman.ptfc;
+package de.unibremen.bhuman.ptfc.control;
 
+import de.unibremen.bhuman.ptfc.Main;
 import de.unibremen.bhuman.ptfc.commands.DeleteCommand;
 import de.unibremen.bhuman.ptfc.commands.IsBallCommand;
 import de.unibremen.bhuman.ptfc.commands.NoBallCommand;
 import de.unibremen.bhuman.ptfc.data.ClassifiedImage;
-import de.unibremen.bhuman.ptfc.data.PNGSource;
-import de.unibremen.bhuman.ptfc.data.PNGSourceCell;
 import de.unibremen.bhuman.ptfc.data.Status;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import javafx.util.Callback;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
+public class ClassifyController {
 
-public class Controller {
-
-    //region FX variables
+    //region FXML Variables
     @FXML
     private ImageView lastView;
 
@@ -72,9 +58,6 @@ public class Controller {
     private Button deleteButton;
 
     @FXML
-    private Button saveButton;
-
-    @FXML
     private Button revertButton;
 
     @FXML
@@ -99,16 +82,7 @@ public class Controller {
     private TextField outputField;
 
     @FXML
-    private ListView<PNGSource> pngSourcesListView;
-
-    @FXML
-    private TextField trainNameField;
-
-    @FXML
-    private TextField trainOutPathField;
-
-    @FXML
-    private Button generateDataButton;
+    private Button saveButton;
     //endregion
 
     private File inputPath, outputPath, pngOutputPath;
@@ -139,11 +113,8 @@ public class Controller {
         revertButton.disableProperty().bind(Main.getCommandHistory().undoProperty().not());
         saveButton.disableProperty().bind(Bindings.and(outputField.textProperty().isEqualTo("").not(), inputField.textProperty().isEqualTo("").not()).not());
         imageList = new ArrayList<>();
-        pngSourcesListView.setCellFactory(param -> new PNGSourceCell());
-        generateDataButton.disableProperty().bind(Bindings.and(trainNameField.textProperty().isNotEmpty(), trainOutPathField.textProperty().isNotEmpty()).not());
     }
 
-    //region Classification
     @FXML
     void aBall(ActionEvent event) {
         if(imageList.size() > 0) {
@@ -279,7 +250,7 @@ public class Controller {
                 positive,
                 negative,
                 delete
-                ));
+        ));
     }
 
     String getAFilename(Status ball) {
@@ -295,56 +266,5 @@ public class Controller {
         );
         return filename;
     }
-    //endregion
 
-    //region Generate FANN
-    @FXML
-    void clearPNGSourcesButton(ActionEvent event) {
-        pngSourcesListView.getItems().clear();
-    }
-
-    @FXML
-    void generateData(ActionEvent event) throws IOException {
-        FileOutputStream outputStream = new FileOutputStream(pngOutputPath.getAbsolutePath() + "/" + trainNameField.getText());
-        String lines = "";
-        int testCount = 0;
-        for(PNGSource source : pngSourcesListView.getItems()) {
-            testCount += source.getImages().size();
-            for(ClassifiedImage image : source.getImages()) {
-                BufferedImage bufferedImage = ImageIO.read(image.getPath());
-                byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-                ArrayList<String> extracted_r = new ArrayList<>();
-                for (int i = 0; i < pixels.length; i += 2) {
-                    extracted_r.add(Integer.toString(pixels[i] & 0xFF));
-                }
-                lines += (String.join(" ", extracted_r)) + "\n";
-                lines += (image.getStatus() == Status.BALL ? "1" : "0") + "\n";
-            }
-        }
-        IOUtils.write(String.format("%d %d %d\n", testCount, 1024, 1), outputStream);
-        IOUtils.write(lines, outputStream);
-        outputStream.close();
-    }
-
-    @FXML
-    void loadPNGSourceButton(ActionEvent event) {
-        DirectoryChooser dc = new DirectoryChooser();
-        File dir = dc.showDialog(Main.getMainWindow());
-        if (dir != null) {
-            PNGSource pngSource = new PNGSource(dir);
-            pngSourcesListView.getItems().add(pngSource);
-        }
-    }
-
-    @FXML
-    void setTrainOutPutPath(ActionEvent event) {
-        DirectoryChooser dc = new DirectoryChooser();
-        File dir = dc.showDialog(Main.getMainWindow());
-        if(dir != null) {
-            pngOutputPath = dir;
-            trainOutPathField.setText(dir.getAbsolutePath());
-        }
-    }
-    //endregion
 }
-*/

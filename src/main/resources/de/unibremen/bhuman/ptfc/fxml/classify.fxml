@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.ClassifyController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <GridPane alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="320.0" prefWidth="320.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="320.0" prefWidth="320.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="320.0" prefWidth="320.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="320.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <children>
+                        <ImageView fx:id="lastView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <ImageView fx:id="currentView" fitHeight="320.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <ImageView fx:id="nextView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </HBox>
+                  <Label text="Last:" />
+                  <Label text="Current:" GridPane.columnIndex="1" />
+                  <Label text="Next:" GridPane.columnIndex="2" />
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                     <children>
+                        <Label fx:id="lastLabel" text="&lt;Name&gt;" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label fx:id="currentLabel" text="&lt;Name&gt;" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <children>
+                        <Label fx:id="nextLabel" text="&lt;Name&gt;" />
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="noBallButton" minWidth="280.0" mnemonicParsing="false" onAction="#noBall" styleClass="noball-button" text="This is no Ball" />
+                  <Button fx:id="ballButton" minWidth="280.0" mnemonicParsing="false" onAction="#aBall" styleClass="ball-button" text="This is a Ball" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete this Choice" />
+                  <Button fx:id="revertButton" mnemonicParsing="false" onAction="#revert" text="Revert last Choice" />
+               </children>
+            </HBox>
+            <TextField fx:id="focusField" onKeyTyped="#keybindInvoke" promptText="Focus this field if you want to use keybinds. This is totally the best way to implement this, i know." />
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="You don't like to click on buttons? You can bind a character such as 'a' to the buttons." />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
+                     <children>
+                        <Label text="Ball (No):" />
+                        <TextField fx:id="noBindField" maxWidth="30.0" promptText="x" text="x" />
+                        <Label text="Ball (Yes):" />
+                        <TextField fx:id="yesBindField" maxWidth="30.0" promptText="y" text="y" />
+                        <Label text="Revert:" />
+                        <TextField fx:id="revertBindField" maxWidth="30.0" promptText="r" text="r" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="statusLabel" text="Status: ??/?? classified - positive: ??, negative: ??, ?? are marked for deletion." GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" prefWidth="400.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Input folder:" />
+                  <TextField fx:id="inputField" editable="false" promptText="/path/to/folder" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#loadInput" text="Load" GridPane.columnIndex="2" />
+                  <Label text="Output folder:" GridPane.rowIndex="1" />
+                  <TextField fx:id="outputField" editable="false" promptText="/path/to/folder" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#loadOutput" text="Load" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save classified data" />
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

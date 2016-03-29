@@ -1,5 +1,6 @@
 package de.unibremen.bhuman.ptfc;
 
+import de.unibremen.bhuman.ptfc.control.ClassifyController;
 import de.yabue.bakacore.Command.CommandHistory;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +32,7 @@ public class Main extends Application{
         mainWindow = primaryStage;
 
         primaryStage.setOnCloseRequest(event -> {
-            if(Controller.isChanges()) {
+            if(ClassifyController.isChanges()) {
                 if(!InfoWindow.showConfirm("Discard changes?", "There are unsaved changes. Closing means losing all of them. Proceed?", mainWindow)) {
                     event.consume();
                 }
