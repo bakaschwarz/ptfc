@@ -5,6 +5,7 @@ import de.unibremen.bhuman.ptfc.commands.DeleteCommand;
 import de.unibremen.bhuman.ptfc.commands.IsBallCommand;
 import de.unibremen.bhuman.ptfc.commands.NoBallCommand;
 import de.unibremen.bhuman.ptfc.data.ClassifiedImage;
+import de.unibremen.bhuman.ptfc.data.PNGSource;
 import de.unibremen.bhuman.ptfc.data.Status;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -108,11 +109,15 @@ public class ClassifyController {
 
     private int outputcounter = 0;
 
+    @Getter
+    private static ClassifyController controller;
+
     @FXML
     void initialize() {
         revertButton.disableProperty().bind(Main.getCommandHistory().undoProperty().not());
         saveButton.disableProperty().bind(Bindings.and(outputField.textProperty().isEqualTo("").not(), inputField.textProperty().isEqualTo("").not()).not());
         imageList = new ArrayList<>();
+        controller = this;
     }
 
     @FXML
@@ -167,6 +172,7 @@ public class ClassifyController {
             }
             updateImages();
             updateStatus();
+            Main.resetCommandHistory();
         }
     }
 
@@ -226,6 +232,9 @@ public class ClassifyController {
         updateImages();
         outputcounter = 0;
         changes = false;
+        PNGSource source = new PNGSource(outputPath);
+        TrainingGenerateController.getController().getSourcesListView().getItems().add(source);
+        Main.resetCommandHistory();
     }
 
     void updateImages() {

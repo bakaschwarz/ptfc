@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import lombok.Getter;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class TrainingGenerateController {
 
-    @FXML
+    @FXML @Getter
     private ListView<PNGSource> sourcesListView;
 
     @FXML
@@ -38,11 +39,14 @@ public class TrainingGenerateController {
 
     private File outputPath;
 
+    @Getter
+    private static TrainingGenerateController controller;
+
     @FXML
     void initialize() {
         sourcesListView.setCellFactory(param -> new PNGSourceCell());
         generateDataButton.disableProperty().bind(Bindings.and(nameField.textProperty().isNotEmpty(), outputPathField.textProperty().isNotEmpty()).not());
-
+        controller = this;
     }
 
     @FXML

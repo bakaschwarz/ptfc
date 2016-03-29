@@ -42,5 +42,7 @@ public class Main extends Application{
         primaryStage.show();
     }
 
-
+    public static void resetCommandHistory() {
+        commandHistory = new CommandHistory(1024);
+    }
 }
