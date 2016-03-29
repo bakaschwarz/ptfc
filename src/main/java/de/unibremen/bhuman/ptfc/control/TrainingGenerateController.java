@@ -3,7 +3,9 @@ package de.unibremen.bhuman.ptfc.control;
 import de.unibremen.bhuman.ptfc.Main;
 import de.unibremen.bhuman.ptfc.data.ClassifiedImage;
 import de.unibremen.bhuman.ptfc.data.PNGSource;
+import de.unibremen.bhuman.ptfc.data.PNGSourceCell;
 import de.unibremen.bhuman.ptfc.data.Status;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,30 +25,37 @@ import java.util.ArrayList;
 public class TrainingGenerateController {
 
     @FXML
-    private ListView<PNGSource> pngSourcesListView;
+    private ListView<PNGSource> sourcesListView;
 
     @FXML
-    private TextField trainNameField;
+    private TextField nameField;
 
     @FXML
-    private TextField trainOutPathField;
+    private TextField outputPathField;
 
     @FXML
     private Button generateDataButton;
 
-    private File pngOutputPath;
+    private File outputPath;
+
+    @FXML
+    void initialize() {
+        sourcesListView.setCellFactory(param -> new PNGSourceCell());
+        generateDataButton.disableProperty().bind(Bindings.and(nameField.textProperty().isNotEmpty(), outputPathField.textProperty().isNotEmpty()).not());
+
+    }
 
     @FXML
     void clearPNGSourcesButton(ActionEvent event) {
-        pngSourcesListView.getItems().clear();
+        sourcesListView.getItems().clear();
     }
 
     @FXML
     void generateData(ActionEvent event) throws IOException {
-        FileOutputStream outputStream = new FileOutputStream(pngOutputPath.getAbsolutePath() + "/" + trainNameField.getText());
+        FileOutputStream outputStream = new FileOutputStream(outputPath.getAbsolutePath() + "/" + nameField.getText());
         String lines = "";
         int testCount = 0;
-        for(PNGSource source : pngSourcesListView.getItems()) {
+        for(PNGSource source : sourcesListView.getItems()) {
             testCount += source.getImages().size();
             for(ClassifiedImage image : source.getImages()) {
                 BufferedImage bufferedImage = ImageIO.read(image.getPath());
@@ -70,7 +79,7 @@ public class TrainingGenerateController {
         File dir = dc.showDialog(Main.getMainWindow());
         if (dir != null) {
             PNGSource pngSource = new PNGSource(dir);
-            pngSourcesListView.getItems().add(pngSource);
+            sourcesListView.getItems().add(pngSource);
         }
     }
 
@@ -79,8 +88,8 @@ public class TrainingGenerateController {
         DirectoryChooser dc = new DirectoryChooser();
         File dir = dc.showDialog(Main.getMainWindow());
         if(dir != null) {
-            pngOutputPath = dir;
-            trainOutPathField.setText(dir.getAbsolutePath());
+            outputPath = dir;
+            outputPathField.setText(dir.getAbsolutePath());
         }
     }
 }

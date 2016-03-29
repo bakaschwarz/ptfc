@@ -14,7 +14,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
             <Label text="List of sources for generation:" />
-            <ListView fx:id="pngSourcesListView" prefHeight="400.0" prefWidth="200.0" />
+            <ListView fx:id="sourcesListView" prefHeight="400.0" prefWidth="200.0" />
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#clearPNGSourcesButton" text="Clear List" />
@@ -24,9 +24,9 @@
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Label text="Output filename:" />
-                  <TextField fx:id="trainNameField" promptText="train.data" />
+                  <TextField fx:id="nameField" promptText="train.data" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" prefWidth="50.0" visible="false" />
-                  <TextField fx:id="trainOutPathField" editable="false" prefWidth="400.0" promptText="/path/to/output" />
+                  <TextField fx:id="outputPathField" editable="false" prefWidth="400.0" promptText="/path/to/output" />
                   <Button mnemonicParsing="false" onAction="#setTrainOutPutPath" text="Set output folder" />
                </children>
             </HBox>
