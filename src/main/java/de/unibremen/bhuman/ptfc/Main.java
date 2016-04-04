@@ -21,6 +21,8 @@ public class Main extends Application{
     private static CommandHistory commandHistory;
 
     public static void main(String[] args) {
+        System.setProperty("jna.library.path", Main.class.getResource("FANN-2.2.0-Source/bin").getPath());
+        System.out.println( System.getProperty("jna.library.path") );
         launch(args);
     }
 

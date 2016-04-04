@@ -65,8 +65,8 @@ public class TrainingGenerateController {
                 BufferedImage bufferedImage = ImageIO.read(image.getPath());
                 byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
                 ArrayList<String> extracted_r = new ArrayList<>();
-                for (int i = 0; i < pixels.length; i += 2) {
-                    extracted_r.add(Integer.toString(pixels[i] & 0xFF));
+                for (int i = 0; i < pixels.length / 3; i++) {
+                    extracted_r.add(Integer.toString(pixels[i*3] & 0xFF));
                 }
                 lines += (String.join(" ", extracted_r)) + "\n";
                 lines += (image.getStatus() == Status.BALL ? "1" : "0") + "\n";
