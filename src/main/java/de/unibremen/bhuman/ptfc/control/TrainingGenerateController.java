@@ -16,6 +16,7 @@ import lombok.Getter;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -63,10 +64,12 @@ public class TrainingGenerateController {
             testCount += source.getImages().size();
             for(ClassifiedImage image : source.getImages()) {
                 BufferedImage bufferedImage = ImageIO.read(image.getPath());
-                byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
                 ArrayList<String> extracted_r = new ArrayList<>();
-                for (int i = 0; i < pixels.length / 3; i++) {
-                    extracted_r.add(Integer.toString(pixels[i*3] & 0xFF));
+                for(int y = 0; y < 32; y++) {
+                    for(int x = 0; x < 32; x++) {
+                        Color color = new Color(bufferedImage.getRGB(x, y));
+                        extracted_r.add(Integer.toString(color.getRed()));
+                    }
                 }
                 lines += (String.join(" ", extracted_r)) + "\n";
                 lines += (image.getStatus() == Status.BALL ? "1" : "0") + "\n";
