@@ -1,17 +1,25 @@
 package de.unibremen.bhuman.ptfc.control;
 
+import de.unibremen.bhuman.ptfc.InfoWindow;
 import de.unibremen.bhuman.ptfc.Main;
+import de.unibremen.bhuman.ptfc.ProgressDialog;
 import de.unibremen.bhuman.ptfc.data.ClassifiedImage;
 import de.unibremen.bhuman.ptfc.data.PNGSource;
 import de.unibremen.bhuman.ptfc.data.PNGSourceCell;
 import de.unibremen.bhuman.ptfc.data.Status;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
 import lombok.Getter;
 import org.apache.commons.io.IOUtils;
 
@@ -19,6 +27,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +48,10 @@ public class TrainingGenerateController {
 
     private File outputPath;
 
+    private static String lines;
+
+    private static int testCount;
+
     @Getter
     private static TrainingGenerateController controller;
 
@@ -56,27 +69,60 @@ public class TrainingGenerateController {
 
     @FXML
     void generateData(ActionEvent event) throws IOException {
-        FileOutputStream outputStream = new FileOutputStream(outputPath.getAbsolutePath() + "/" + nameField.getText());
-        String lines = "";
-        int testCount = 0;
-        for(PNGSource source : sourcesListView.getItems()) {
-            testCount += source.getImages().size();
-            for(ClassifiedImage image : source.getImages()) {
-                BufferedImage bufferedImage = ImageIO.read(image.getPath());
-                ArrayList<String> extracted_r = new ArrayList<>();
-                for(int y = 0; y < 32; y++) {
-                    for(int x = 0; x < 32; x++) {
-                        Color color = new Color(bufferedImage.getRGB(x, y));
-                        extracted_r.add(Integer.toString(color.getRed()));
+        lines = "";
+        testCount = 0;
+        Service<Void> service = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        int count = 1;
+                        for(PNGSource source : sourcesListView.getItems()) {
+                            testCount += source.getImages().size();
+                            for(ClassifiedImage image : source.getImages()) {
+                                updateMessage(String.format(
+                                        "Converting image %s...",
+                                        count
+                                        ));
+                                count++;
+                                BufferedImage bufferedImage = ImageIO.read(image.getPath());
+                                ArrayList<String> extracted_r = new ArrayList<>();
+                                for(int y = 0; y < 32; y++) {
+                                    for(int x = 0; x < 32; x++) {
+                                        Color color = new Color(bufferedImage.getRGB(x, y));
+                                        extracted_r.add(Integer.toString(color.getRed()));
+                                    }
+                                }
+                                lines += (String.join(" ", extracted_r)) + "\n";
+                                lines += (image.getStatus() == Status.BALL ? "1" : "0") + "\n";
+                            }
+                        }
+                        return null;
                     }
-                }
-                lines += (String.join(" ", extracted_r)) + "\n";
-                lines += (image.getStatus() == Status.BALL ? "1" : "0") + "\n";
+                };
             }
-        }
-        IOUtils.write(String.format("%d %d %d\n", testCount, 1024, 1), outputStream);
-        IOUtils.write(lines, outputStream);
-        outputStream.close();
+        };
+        service.setOnSucceeded(event1 -> {
+            try {
+                FileOutputStream outputStream = new FileOutputStream(outputPath.getAbsolutePath() + "/" + nameField.getText());
+                IOUtils.write("# Dataset generated with ptfc.", outputStream);
+                IOUtils.write(String.format("%d %d %d\n", testCount, 1024, 1), outputStream);
+                IOUtils.write(lines, outputStream);
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        service.setOnFailed(event1 -> {
+            InfoWindow.showInfo("Write error!", "Failed to write training data to file!", Main.getMainWindow());
+        });
+        ProgressDialog progressDialog = new ProgressDialog(service);
+        //progressDialog.setIndeterminate(true);
+        progressDialog.initOwner(Main.getMainWindow());
+        progressDialog.initModality(Modality.APPLICATION_MODAL);
+        progressDialog.setTitle("Saving dataset...");
+        service.start();
     }
 
     @FXML

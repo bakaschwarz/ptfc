@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="267.0" layoutY="200.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
@@ -83,8 +82,8 @@
             <TextArea fx:id="consoleArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" styleClass="ball-button" text="Train Network" />
-                  <Button mnemonicParsing="false" styleClass="noball-button" text="Test Network" />
+                  <Button fx:id="trainButton" mnemonicParsing="false" styleClass="ball-button" text="Train Network" />
+                  <Button fx:id="testButton" mnemonicParsing="false" styleClass="noball-button" text="Test Network" />
                </children>
             </HBox>
          </children>
