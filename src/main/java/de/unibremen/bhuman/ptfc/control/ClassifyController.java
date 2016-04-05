@@ -86,7 +86,7 @@ public class ClassifyController {
     private Button saveButton;
     //endregion
 
-    private File inputPath, outputPath, pngOutputPath;
+    private File inputPath, outputPath;
 
     @Getter
     private static List<ClassifiedImage> imageList;
@@ -218,7 +218,7 @@ public class ClassifyController {
         for(ClassifiedImage image : imageList) {
             if(image.getStatus() != Status.DELETE && image.getStatus() != Status.NOTHING) {
                 String out_name = getAFilename(image.getStatus());
-                File out_file = new File(outputPath.getAbsolutePath() + "/" + out_name);
+                File out_file = new File(outputPath.getAbsolutePath() + File.separator + out_name);
                 FileUtils.copyFile(image.getPath(), out_file);
                 image.setStatus(Status.NOTHING);
             }

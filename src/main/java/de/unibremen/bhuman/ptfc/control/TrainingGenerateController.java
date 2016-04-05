@@ -105,7 +105,7 @@ public class TrainingGenerateController {
         };
         service.setOnSucceeded(event1 -> {
             try {
-                FileOutputStream outputStream = new FileOutputStream(outputPath.getAbsolutePath() + "/" + nameField.getText());
+                FileOutputStream outputStream = new FileOutputStream(outputPath.getAbsolutePath() + File.separator + nameField.getText());
                 IOUtils.write("# Dataset generated with ptfc.", outputStream);
                 IOUtils.write(String.format("%d %d %d\n", testCount, 1024, 1), outputStream);
                 IOUtils.write(lines, outputStream);

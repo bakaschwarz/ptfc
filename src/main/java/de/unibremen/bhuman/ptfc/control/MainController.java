@@ -16,11 +16,17 @@ public class MainController {
     private Tab trainingGenerationTab;
 
     @FXML
+    private Tab fcnnTab;
+
+    @FXML
     void initialize() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/classify.fxml"));
         classificationTab.setContent(fxmlLoader.load());
 
         FXMLLoader fxmlLoader1 = new FXMLLoader(Main.class.getResource("fxml/training.fxml"));
         trainingGenerationTab.setContent(fxmlLoader1.load());
+
+        FXMLLoader fxmlLoader2 = new FXMLLoader(Main.class.getResource("fxml/nettrain.fxml"));
+        fcnnTab.setContent(fxmlLoader2.load());
     }
 }
