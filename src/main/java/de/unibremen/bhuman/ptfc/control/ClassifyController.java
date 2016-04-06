@@ -113,7 +113,7 @@ public class ClassifyController {
 
     @FXML
     void initialize() {
-        revertButton.disableProperty().bind(Main.getCommandHistory().undoProperty().not());
+        //revertButton.disableProperty().bind(Bindings.not(Main.getCommandHistory().undoProperty())); Broken?
         saveButton.disableProperty().bind(Bindings.and(outputField.textProperty().isEqualTo("").not(), inputField.textProperty().isEqualTo("").not()).not());
         imageList = new ArrayList<>();
         controller = this;

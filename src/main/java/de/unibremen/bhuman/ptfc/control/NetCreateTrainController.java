@@ -102,6 +102,7 @@ public class NetCreateTrainController {
         yAxis.setTickUnit(0.000001);
         xAxis.setLabel("Epoches");
         yAxis.setLabel("MSE");
+        yAxis.setForceZeroInRange(false);
         lineChart = new LineChart<>(xAxis, yAxis);
         chartBox.getChildren().add(lineChart);
         series = new XYChart.Series<>();
