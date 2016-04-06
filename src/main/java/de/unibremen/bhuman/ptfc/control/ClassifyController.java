@@ -106,7 +106,6 @@ public class ClassifyController {
     @Getter
     private static boolean changes = false;
 
-
     private int outputcounter = 0;
 
     @Getter
@@ -155,6 +154,7 @@ public class ClassifyController {
             }
         }
         event.consume();
+
     }
 
     @FXML

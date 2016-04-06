@@ -107,6 +107,15 @@
     -fx-background-color: crimson;
 }
 
+.cancel-button {
+    -fx-background-color: #6b0b13;
+    -fx-font-size: 32;
+}
+
+.cancel-button:hover {
+    -fx-background-color: crimson;
+}
+
 .generate-button {
     -fx-background-color: #4386c4;
     -fx-font-size: 42;

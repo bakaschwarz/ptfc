@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
@@ -23,7 +22,7 @@
             <FlowPane prefHeight="60.0" prefWidth="200.0">
                <children>
                   <Label text="Use this interface to train your neural network, or create a new one. You will need the ptfc_fcnn program to do so. Please visit" />
-                  <Hyperlink onAction="#openGithub" text="https://github.com/bakaschwarz/ptfc_fcnn" />
+                  <Label text=" https://github.com/bakaschwarz/ptfc_fcnn" />
                   <Label text="for more information." />
                </children>
             </FlowPane>
@@ -49,7 +48,7 @@
                         <TextField fx:id="trainField" editable="false" promptText="/path/to/dataset" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Button mnemonicParsing="false" onAction="#loadDataset" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="ptfc_fcnn Executable Path:" GridPane.rowIndex="2" />
-                        <TextField promptText="Default: WORKING_DIR/ptfc_fcnn" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="fcnnField" editable="false" promptText="Default: WORKING_DIR/ptfc_fcnn" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Button mnemonicParsing="false" onAction="#loadFCNNExe" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                            <children>
@@ -63,6 +62,8 @@
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -76,6 +77,8 @@
                         <TextField fx:id="mseField" text="0.001" GridPane.columnIndex="1" />
                         <TextField fx:id="epochesField" text="5000" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="frequencyField" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Learn Rate:" GridPane.columnIndex="2" />
+                        <TextField fx:id="learnField" text="0.7" GridPane.columnIndex="3" />
                      </children>
                   </GridPane>
                </children>
@@ -84,11 +87,17 @@
             <TextField fx:id="layerField" promptText="layer layout" />
             <Label styleClass="title-label" text="Console Output" />
             <Separator prefWidth="200.0" />
-            <TextArea fx:id="consoleArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
+            <HBox fx:id="chartBox" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <TextArea fx:id="consoleArea" editable="false" prefHeight="200.0" prefWidth="500.0" wrapText="true" />
+               </children>
+            </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="trainButton" mnemonicParsing="false" styleClass="ball-button" text="Train Network" />
-                  <Button fx:id="testButton" mnemonicParsing="false" styleClass="noball-button" text="Test Network" />
+                  <Button fx:id="trainButton" mnemonicParsing="false" onAction="#trainNet" styleClass="ball-button" text="Train Network" />
+                  <Button fx:id="testButton" mnemonicParsing="false" onAction="#testNet" styleClass="noball-button" text="Test Network" />
+                  <Separator orientation="VERTICAL" prefHeight="200.0" prefWidth="50.0" visible="false" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelTraining" styleClass="cancel-button" text="Cancel Training" />
                </children>
             </HBox>
          </children>
