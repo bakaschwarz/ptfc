@@ -29,6 +29,7 @@ import javafx.stage.StageStyle;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class NetCreateTrainController {
 
@@ -87,7 +88,7 @@ public class NetCreateTrainController {
 
     private LineChart<Number, Number> lineChart;
 
-    private NumberAxis xAxis;
+    private NumberAxis xAxis, yAxis;
 
     @FXML
     void initialize() {
@@ -98,7 +99,7 @@ public class NetCreateTrainController {
         trainButton.disableProperty().bind(Bindings.isNotNull(train));
         xAxis = new NumberAxis();
         xAxis.setForceZeroInRange(false);
-        NumberAxis yAxis = new NumberAxis();
+        yAxis = new NumberAxis();
         yAxis.setTickUnit(0.000001);
         xAxis.setLabel("Epoches");
         yAxis.setLabel("MSE");
@@ -185,6 +186,11 @@ public class NetCreateTrainController {
                                         xAxis.setTickUnit(20);
                                         xAxis.setLowerBound(series.getData().get(0).getXValue().floatValue());
                                         xAxis.setUpperBound(series.getData().get(series.getData().size() -1 ).getXValue().floatValue());
+                                    }
+                                    for(XYChart.Data<Number, Number> d : series.getData()) {
+                                        if(yAxis.getLowerBound() > d.getYValue().doubleValue()) {
+                                            yAxis.setLowerBound(d.getYValue().doubleValue());
+                                        }
                                     }
                                 }
                             });
