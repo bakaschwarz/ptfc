@@ -91,7 +91,7 @@
 
 .ball-button {
     -fx-background-color: #98bacd;
-    -fx-font-size: 32;
+    -fx-font-size: 24;
 }
 
 .ball-button:hover {
@@ -100,7 +100,7 @@
 
 .noball-button {
     -fx-background-color: #AA3939;
-    -fx-font-size: 32;
+    -fx-font-size: 24;
 }
 
 .noball-button:hover {
@@ -109,7 +109,7 @@
 
 .cancel-button {
     -fx-background-color: #6b0b13;
-    -fx-font-size: 32;
+    -fx-font-size: 24;
 }
 
 .cancel-button:hover {
@@ -174,11 +174,14 @@
 
 .title-label {
     -fx-font-size: 24;
+    -fx-text-fill: #bfc1c2;
 }
 
 .container {
-    -fx-border-color: #393a3b;
-    -fx-border-width: 3px;
+    -fx-border-color: #232323;
+    -fx-border-width: 1px;
+    -fx-border-insets: 4 4 4 4;
+
 }
 
 .default-color1.chart-series-line { -fx-stroke: #479bdd}

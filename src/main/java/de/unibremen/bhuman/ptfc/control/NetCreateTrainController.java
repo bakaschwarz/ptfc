@@ -161,7 +161,7 @@ public class NetCreateTrainController {
         series = new XYChart.Series<>();
         series.setName("MSE Flow");
         absoluteMin = new XYChart.Series<>();
-        absoluteMin.setName("Lowest MSE");
+        absoluteMin.setName("Lowest Value");
         lineChart.getData().addAll(series, absoluteMin);
         absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getLowerBound(), minValueOfSeries));
         absoluteMin.getData().get(0).setNode(null);
