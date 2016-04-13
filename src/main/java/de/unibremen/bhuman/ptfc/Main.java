@@ -32,7 +32,7 @@ public class Main extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
         primaryStage.setScene(new Scene(fxmlLoader.load()));
         mainWindow = primaryStage;
-
+        primaryStage.setTitle("PTFC");
         primaryStage.setOnCloseRequest(event -> {
             if(ClassifyController.isChanges()) {
                 if(!InfoWindow.showConfirm("Discard changes?", "There are unsaved changes. Closing means losing all of them. Proceed?", mainWindow)) {
