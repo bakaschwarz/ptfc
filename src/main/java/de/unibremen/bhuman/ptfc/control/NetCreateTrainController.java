@@ -1,5 +1,6 @@
 package de.unibremen.bhuman.ptfc.control;
 
+import com.sun.javafx.charts.Legend;
 import de.unibremen.bhuman.ptfc.InfoWindow;
 import de.unibremen.bhuman.ptfc.Main;
 import javafx.application.Platform;
@@ -9,6 +10,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -19,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -149,14 +153,33 @@ public class NetCreateTrainController {
         yAxis.setForceZeroInRange(false);
         lineChart = new LineChart<>(xAxis, yAxis);
         chartBox.getChildren().add(lineChart);
+        lineChart.setPrefWidth(650);
+    }
+
+    void prepareNewChart() {
+        lineChart.getData().clear();
         series = new XYChart.Series<>();
         series.setName("MSE Flow");
         absoluteMin = new XYChart.Series<>();
-        absoluteMin.setName("Lowest Value");
-        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getLowerBound(), minValueOfSeries));
-        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getUpperBound(), minValueOfSeries));
+        absoluteMin.setName("Lowest MSE");
         lineChart.getData().addAll(series, absoluteMin);
-        lineChart.setPrefWidth(650);
+        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getLowerBound(), minValueOfSeries));
+        absoluteMin.getData().get(0).setNode(null);
+        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getUpperBound(), minValueOfSeries));
+        absoluteMin.getData().get(1).setNode(null);
+
+        for (Node node : lineChart.getChildrenUnmodifiable()) {
+            if (node instanceof Legend) {
+                Legend legend = (Legend) node;
+                for (Legend.LegendItem legendItem : legend.getItems()) {
+                    if(legendItem.getText().equals(absoluteMin.getName())) {
+                        Rectangle symbol = new Rectangle(10, 10);
+                        symbol.setFill(Color.valueOf("#479bdd"));
+                        legendItem.setSymbol(symbol);
+                    }
+                }
+            }
+        }
         minValueOfSeries = Float.MAX_VALUE;
     }
 
@@ -225,12 +248,11 @@ public class NetCreateTrainController {
     @FXML
     void trainNet() throws IOException {
         if(allConditionsMet()) {
-            series.getData().clear();
+            prepareNewChart();
+            consoleArea.setText("");
             Thread thread = new Thread(new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    absoluteMin.getNode().setStyle("-fx-stroke: #479bdd; -fx-border-color: #479bdd; -fx-background-color: #479bdd");
-                    consoleArea.setText("");
                     train = new ProcessBuilder(getArguments()).redirectErrorStream(true).start();
                     inTraining.setValue(true);
                     InputStreamReader reader = new InputStreamReader(train.getInputStream());
@@ -271,7 +293,7 @@ public class NetCreateTrainController {
                             });
                         }
                     }
-                    cleanUp("Finished the training.");
+                    Platform.runLater(() -> cleanUp("Finished the training."));
                     return null;
                 }
             });
@@ -328,8 +350,6 @@ public class NetCreateTrainController {
         consoleArea.appendText(consoleMessage + "\n");
         currentMSELabel.setText("Current Lowest MSE: Infinite");
         inTraining.setValue(false);
-        series.getData().clear();
-        minValueOfSeries = Float.MAX_VALUE;
         train = null;
     }
 

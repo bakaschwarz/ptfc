@@ -175,3 +175,10 @@
 .title-label {
     -fx-font-size: 24;
 }
+
+.container {
+    -fx-border-color: #393a3b;
+    -fx-border-width: 3px;
+}
+
+.default-color1.chart-series-line { -fx-stroke: #479bdd}
