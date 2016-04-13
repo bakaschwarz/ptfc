@@ -27,10 +27,10 @@ public class PNGSource {
                 image.setPath(file);
                 String fake = file.getName().substring(0, 2);
                 if(fake.equals("f_")) {
-                    image.setStatus(Status.NOBALL);
+                    image.setStatus(Status.NEGATIVE);
                     negative++;
                 } else {
-                    image.setStatus(Status.BALL);
+                    image.setStatus(Status.POSITIVE);
                     positive++;
                 }
                 images.add(image);

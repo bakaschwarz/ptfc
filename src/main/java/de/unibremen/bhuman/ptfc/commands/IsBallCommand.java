@@ -10,7 +10,7 @@ public class IsBallCommand extends FXCommand {
     @Override
     public void executeAction() {
         ClassifiedImage image = ClassifyController.getImageList().get(ClassifyController.getIndex());
-        image.setStatus(Status.BALL);
+        image.setStatus(Status.POSITIVE);
         ClassifyController.setIndex(ClassifyController.getIndex() + 1);
         ClassifyController.setPositive(ClassifyController.getPositive() + 1);
     }

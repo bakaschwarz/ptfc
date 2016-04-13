@@ -10,10 +10,7 @@ import de.unibremen.bhuman.ptfc.data.Status;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -27,7 +24,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,7 +91,7 @@ public class TrainingGenerateController {
                                     }
                                 }
                                 lines += (String.join(" ", extracted_r)) + "\n";
-                                lines += (image.getStatus() == Status.BALL ? "1" : "0") + "\n";
+                                lines += (image.getStatus() == Status.POSITIVE ? "1" : "0") + "\n";
                             }
                         }
                         return null;

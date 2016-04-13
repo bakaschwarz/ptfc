@@ -50,10 +50,10 @@ public class ClassifyController {
     private Label nextLabel;
 
     @FXML
-    private Button noBallButton;
+    private Button noButton;
 
     @FXML
-    private Button ballButton;
+    private Button yesButton;
 
     @FXML
     private Button deleteButton;
@@ -74,6 +74,9 @@ public class ClassifyController {
     private TextField revertBindField;
 
     @FXML
+    private TextField deleteBindField;
+
+    @FXML
     private Label statusLabel;
 
     @FXML
@@ -86,7 +89,7 @@ public class ClassifyController {
     private Button saveButton;
     //endregion
 
-    private File inputPath, outputPath;
+    private File outputPath;
 
     @Getter
     private static List<ClassifiedImage> imageList;
@@ -113,14 +116,13 @@ public class ClassifyController {
 
     @FXML
     void initialize() {
-        //revertButton.disableProperty().bind(Bindings.not(Main.getCommandHistory().undoProperty())); Broken?
         saveButton.disableProperty().bind(Bindings.and(outputField.textProperty().isEqualTo("").not(), inputField.textProperty().isEqualTo("").not()).not());
         imageList = new ArrayList<>();
         controller = this;
     }
 
     @FXML
-    void aBall(ActionEvent event) {
+    void yesAction(ActionEvent event) {
         if(imageList.size() > 0) {
             IsBallCommand isBallCommand = new IsBallCommand();
             Main.getCommandHistory().execute(isBallCommand);
@@ -146,11 +148,13 @@ public class ClassifyController {
         if(index < imageList.size()) {
             String input = event.getCharacter();
             if (input.toCharArray()[0] == noBindField.getText().toCharArray()[0]) {
-                noBall(new ActionEvent());
+                noAction(new ActionEvent());
             } else if (input.toCharArray()[0] == yesBindField.getText().toCharArray()[0]) {
-                aBall(new ActionEvent());
+                yesAction(new ActionEvent());
             } else if (input.toCharArray()[0] == revertBindField.getText().toCharArray()[0]) {
                 revert(new ActionEvent());
+            } else if(input.toCharArray()[0] == deleteBindField.getText().toCharArray()[0]) {
+                delete(new ActionEvent());
             }
         }
         event.consume();
@@ -160,7 +164,7 @@ public class ClassifyController {
     @FXML
     void loadInput(ActionEvent event) throws FileNotFoundException {
         DirectoryChooser dc = new DirectoryChooser();
-        inputPath = dc.showDialog(Main.getMainWindow());
+        File inputPath = dc.showDialog(Main.getMainWindow());
         if(inputPath != null) {
             inputField.setText(inputPath.getAbsolutePath());
             imageList.clear();
@@ -186,7 +190,7 @@ public class ClassifyController {
     }
 
     @FXML
-    void noBall(ActionEvent event) {
+    void noAction(ActionEvent event) {
         if(imageList.size() > 0) {
             NoBallCommand noBallCommand = new NoBallCommand();
             Main.getCommandHistory().execute(noBallCommand);
@@ -266,7 +270,7 @@ public class ClassifyController {
         DateTime dt = new DateTime();
         String filename = String.format(
                 "%s%s_%s_%s_%s_%04d.png",
-                ball == Status.BALL ? "" : "f_",
+                ball == Status.POSITIVE ? "" : "f_",
                 dt.getYear(),
                 dt.getMonthOfYear(),
                 dt.getDayOfMonth(),

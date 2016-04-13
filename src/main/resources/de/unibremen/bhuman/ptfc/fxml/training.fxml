@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -13,27 +14,46 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <Label text="List of sources for generation:" />
-            <ListView fx:id="sourcesListView" prefHeight="400.0" prefWidth="200.0" />
-            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" styleClass="container" VBox.vgrow="SOMETIMES">
                <children>
-                  <Button mnemonicParsing="false" onAction="#clearPNGSourcesButton" text="Clear List" />
-                  <Button mnemonicParsing="false" onAction="#loadPNGSourceButton" text="Add a directory" />
+                  <Label styleClass="title-label" text="Source List" />
+                  <Separator prefHeight="10.0" prefWidth="200.0" />
+                  <Label text="When you have classified your image data, you can use them here to generate FANN compatible training datasets from them." wrapText="true" />
+                  <Label text="These images have to be in PNG format and must all have the same size." />
+                  <ListView fx:id="sourcesListView" prefHeight="400.0" prefWidth="200.0" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#clearPNGSourcesButton" text="Clear List" />
+                        <Button mnemonicParsing="false" onAction="#loadPNGSourceButton" text="Add a directory" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="5.0">
+               <padding>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </padding>
+            </VBox>
+            <VBox prefWidth="100.0" styleClass="container">
                <children>
-                  <Label text="Output filename:" />
-                  <TextField fx:id="nameField" promptText="train.data" />
-                  <Separator orientation="VERTICAL" prefHeight="200.0" prefWidth="50.0" visible="false" />
-                  <TextField fx:id="outputPathField" editable="false" prefWidth="400.0" promptText="/path/to/output" />
-                  <Button mnemonicParsing="false" onAction="#setTrainOutPutPath" text="Set output folder" />
+                  <Label styleClass="title-label" text="Output" />
+                  <Separator prefWidth="200.0" />
+                  <Label text="Select a directory for the dataset and specify a name." />
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Output filename:" />
+                        <TextField fx:id="nameField" promptText="train.data" />
+                        <Separator orientation="VERTICAL" prefHeight="200.0" prefWidth="50.0" visible="false" />
+                        <TextField fx:id="outputPathField" editable="false" prefWidth="400.0" promptText="/path/to/output" />
+                        <Button mnemonicParsing="false" onAction="#setTrainOutPutPath" text="Set output folder" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
-            <Label text="Provide only images in PNG format of the same dimensions. This program uses red as the grayscale image value from the RGB spectrum. So make sure you exported them correctly. How to do that is not my problem, ask Jonas 0. This program will not respond when processing large amount of data. Please be patient. It's not coded the most efficient way." wrapText="true" />
+               <padding>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </padding>
+            </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <Button fx:id="generateDataButton" mnemonicParsing="false" onAction="#generateData" styleClass="generate-button" text="Give me some fann data!" />
+                  <Button fx:id="generateDataButton" mnemonicParsing="false" onAction="#generateData" styleClass="generate-button" text="Generate FANN Data" />
                </children>
             </HBox>
          </children>
