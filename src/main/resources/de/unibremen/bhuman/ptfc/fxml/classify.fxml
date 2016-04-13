@@ -29,17 +29,17 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <children>
-                        <ImageView fx:id="lastView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="lastView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" smooth="false" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <ImageView fx:id="currentView" fitHeight="320.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="currentView" fitHeight="320.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
-                        <ImageView fx:id="nextView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="nextView" fitHeight="320.0" fitWidth="320.0" opacity="0.25" pickOnBounds="true" preserveRatio="true" smooth="false" />
                      </children>
                   </HBox>
                   <Label text="Last:" />
