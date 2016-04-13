@@ -87,9 +87,14 @@
             <TextField fx:id="layerField" promptText="layer layout" />
             <Label styleClass="title-label" text="Console Output" />
             <Separator prefWidth="200.0" />
-            <HBox fx:id="chartBox" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <TextArea fx:id="consoleArea" editable="false" prefHeight="200.0" prefWidth="500.0" wrapText="true" />
+                  <VBox fx:id="chartBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="currentMSELabel" text="Current Lowest MSE: Infinite" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

@@ -18,9 +18,11 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -70,7 +72,10 @@ public class NetCreateTrainController {
     private Button cancelButton;
 
     @FXML
-    private HBox chartBox;
+    private VBox chartBox;
+
+    @FXML
+    private Label currentMSELabel;
 
     private File networkPath;
 
@@ -82,21 +87,27 @@ public class NetCreateTrainController {
 
     private String line;
 
-    private SimpleObjectProperty<Process> train;
+    private Process train;
+
+    private SimpleBooleanProperty inTraining;
 
     private XYChart.Series<Number, Number> series;
+
+    private XYChart.Series<Number, Number> absoluteMin;
 
     private LineChart<Number, Number> lineChart;
 
     private NumberAxis xAxis, yAxis;
 
+    float minValueOfSeries;
+
     @FXML
     void initialize() {
-        train = new SimpleObjectProperty<>();
+        inTraining = new SimpleBooleanProperty(false);
         newNet = new SimpleBooleanProperty();
-        cancelButton.disableProperty().bind(Bindings.isNull(train));
-        testButton.disableProperty().bind(Bindings.or(Bindings.isNotNull(train), newNet));
-        trainButton.disableProperty().bind(Bindings.isNotNull(train));
+        cancelButton.disableProperty().bind(inTraining.not());
+        testButton.disableProperty().bind(Bindings.or(inTraining, newNet));
+        trainButton.disableProperty().bind(inTraining);
         xAxis = new NumberAxis();
         xAxis.setForceZeroInRange(false);
         yAxis = new NumberAxis();
@@ -108,8 +119,11 @@ public class NetCreateTrainController {
         chartBox.getChildren().add(lineChart);
         series = new XYChart.Series<>();
         series.setName("MSE Flow");
-        lineChart.getData().add(series);
+        absoluteMin = new XYChart.Series<>();
+        absoluteMin.setName("Lowest Value");
+        lineChart.getData().addAll(series, absoluteMin);
         lineChart.setPrefWidth(650);
+        minValueOfSeries = Float.MAX_VALUE;
     }
 
     @FXML
@@ -171,22 +185,36 @@ public class NetCreateTrainController {
             Thread thread = new Thread(new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    train.set(new ProcessBuilder(getArguments()).redirectErrorStream(true).start());
-                    InputStreamReader reader = new InputStreamReader(train.get().getInputStream());
+                    train = new ProcessBuilder(getArguments()).redirectErrorStream(true).start();
+                    inTraining.setValue(true);
+                    InputStreamReader reader = new InputStreamReader(train.getInputStream());
                     BufferedReader bufferedReader = new BufferedReader(reader);
-                    while(train.get().isAlive()) {
+                    while(train.isAlive()) {
                         if ((line = bufferedReader.readLine()) != null) {
                             Platform.runLater(() -> {
                                 consoleArea.appendText(line + "\n");
                                 if (line.toCharArray()[0] == 'b') {
                                     XYChart.Data<Number, Number> data = new XYChart.Data<>(Integer.parseInt(line.split(" ")[2].replace(",", "")), Float.parseFloat(line.split(" ")[4]));
                                     series.getData().add(data);
+
                                     if (series.getData().size() > 20) {
-                                        series.getData().remove(0, 5);
+                                        series.getData().remove(0, 1);
                                         xAxis.setTickUnit(20);
                                         xAxis.setLowerBound(series.getData().get(0).getXValue().floatValue());
                                         xAxis.setUpperBound(series.getData().get(series.getData().size() -1 ).getXValue().floatValue());
                                     }
+
+                                    if (series.getData().get(series.getData().size() -1).getYValue().floatValue() < minValueOfSeries) {
+                                        minValueOfSeries = series.getData().get(series.getData().size() -1).getYValue().floatValue();
+                                        absoluteMin.getData().clear();
+                                        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getLowerBound(), minValueOfSeries));
+                                        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getUpperBound(), minValueOfSeries));
+                                        currentMSELabel.setText(String.format(
+                                                "Current Lowest MSE: %s",
+                                                minValueOfSeries
+                                        ));
+                                    }
+
                                     for(XYChart.Data<Number, Number> d : series.getData()) {
                                         if(yAxis.getLowerBound() > d.getYValue().doubleValue()) {
                                             yAxis.setLowerBound(d.getYValue().doubleValue());
@@ -196,6 +224,9 @@ public class NetCreateTrainController {
                             });
                         }
                     }
+                    inTraining.setValue(false);
+                    minValueOfSeries = Float.MAX_VALUE;
+                    currentMSELabel.setText("Current Lowest MSE: Infinite");
                     return null;
                 }
             });
@@ -209,9 +240,10 @@ public class NetCreateTrainController {
 
     @FXML
     void cancelTraining() {
-        if(train.get() != null && InfoWindow.showConfirm("Need Confirmation", "Do you really want to cancel the training? All progress will be lost.", Main.getMainWindow())) {
-            train.get().destroyForcibly();
-            train.set(null);
+        if(train != null && InfoWindow.showConfirm("Need Confirmation", "Do you really want to cancel the training? All progress will be lost.", Main.getMainWindow())) {
+            train.destroyForcibly();
+            train = null;
+            inTraining.setValue(false);
         }
     }
 
