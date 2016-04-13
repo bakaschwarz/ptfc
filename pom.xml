@@ -6,7 +6,7 @@
 
     <groupId>de.unibremen.bhuman</groupId>
     <artifactId>ptfc</artifactId>
-    <version>1.5.6</version>
+    <version>1.6.0</version>
 
     <build>
         <plugins>
@@ -78,6 +78,11 @@
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
             <version>8.20.8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
         </dependency>
     </dependencies>
 </project>

@@ -28,7 +28,7 @@
             </FlowPane>
             <Label styleClass="title-label" text="Settings" />
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
                <children>
                   <GridPane>
                     <columnConstraints>
@@ -40,22 +40,26 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="Neural Network Path:" />
-                        <Label text="Training/Test Dataset Path:" GridPane.rowIndex="1" />
+                        <Label text="Training Dataset Path:" GridPane.rowIndex="1" />
                         <TextField fx:id="networkField" editable="false" promptText="/path/to/net" GridPane.columnIndex="1" />
                         <TextField fx:id="trainField" editable="false" promptText="/path/to/dataset" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#loadDataset" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label text="ptfc_fcnn Executable Path:" GridPane.rowIndex="2" />
-                        <TextField fx:id="fcnnField" editable="false" promptText="Default: WORKING_DIR/ptfc_fcnn" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" onAction="#loadFCNNExe" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Button mnemonicParsing="false" onAction="#loadTrain" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="ptfc_fcnn Executable Path:" GridPane.rowIndex="3" />
+                        <TextField fx:id="fcnnField" editable="false" promptText="Default: WORKING_DIR/ptfc_fcnn" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" onAction="#loadFCNNExe" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                            <children>
                               <Button mnemonicParsing="false" onAction="#loadNet" text="Load" />
                               <Button mnemonicParsing="false" onAction="#newNet" text="New" />
                            </children>
                         </HBox>
+                        <Label text="Test Dataset Path:" GridPane.rowIndex="2" />
+                        <TextField fx:id="testField" promptText="/path/to/dataset" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button mnemonicParsing="false" onAction="#loadTest" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane>
@@ -83,11 +87,16 @@
                   </GridPane>
                </children>
             </HBox>
-            <Label text="Here you can specify how the layout for the layers of the network should be. You can type something like this: &quot;1024 120 50 1&quot; without the quotes. This will generate a network with 1024 input neurons, 2 hidden layers and an output layer with 1 neuron." wrapText="true" />
+            <HBox prefWidth="200.0">
+               <children>
+                  <Label text="Here you can specify how the layout for the layers of the network should be. You can type something like this: &quot;1024 120 50 1&quot; without the quotes. This will generate a network with 1024 input neurons, 2 hidden layers and an output layer with 1 neuron." wrapText="true" />
+                  <Button minWidth="200.0" mnemonicParsing="false" onAction="#saveConfig" prefWidth="200.0" text="Save Configuration" />
+               </children>
+            </HBox>
             <TextField fx:id="layerField" promptText="layer layout" />
             <Label styleClass="title-label" text="Console Output" />
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <HBox maxHeight="300.0" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <TextArea fx:id="consoleArea" editable="false" prefHeight="200.0" prefWidth="500.0" wrapText="true" />
                   <VBox fx:id="chartBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">

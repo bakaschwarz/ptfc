@@ -4,10 +4,7 @@ import de.unibremen.bhuman.ptfc.InfoWindow;
 import de.unibremen.bhuman.ptfc.Main;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,17 +18,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class NetCreateTrainController {
 
@@ -40,6 +37,9 @@ public class NetCreateTrainController {
 
     @FXML
     private TextField trainField;
+
+    @FXML
+    private TextField testField;
 
     @FXML
     private TextField mseField;
@@ -79,9 +79,11 @@ public class NetCreateTrainController {
 
     private File networkPath;
 
-    private File datasetPath;
+    private File trainPath;
 
     private File fcnnPath;
+
+    private File testPath;
 
     private SimpleBooleanProperty newNet;
 
@@ -99,15 +101,45 @@ public class NetCreateTrainController {
 
     private NumberAxis xAxis, yAxis;
 
-    float minValueOfSeries;
+    private float minValueOfSeries;
 
     @FXML
     void initialize() {
         inTraining = new SimpleBooleanProperty(false);
         newNet = new SimpleBooleanProperty();
+        loadFromConfig();
+        prepareButtonBindings();
+        prepareChartStuff();
+    }
+
+    void loadFromConfig() {
+        File tmp;
+        networkField.setText(Main.getObservableConfiguration().getString("networkPath", ""));
+        tmp = new File(networkField.getText());
+        networkPath = tmp.exists() ? tmp : null;
+        trainField.setText(Main.getObservableConfiguration().getString("trainingPath", ""));
+        tmp = new File(trainField.getText());
+        trainPath = tmp.exists() ? tmp : null;
+        fcnnField.setText(Main.getObservableConfiguration().getString("fcnnPath", ""));
+        tmp = new File(fcnnField.getText());
+        fcnnPath = tmp.exists() ? tmp : null;
+        testField.setText(Main.getObservableConfiguration().getString("testPath", ""));
+        tmp = new File(testField.getText());
+        testPath = tmp.exists() ? tmp : null;
+        mseField.setText(Main.getObservableConfiguration().getString("mse", "0.01"));
+        epochesField.setText(Main.getObservableConfiguration().getString("epoches", "5000"));
+        frequencyField.setText(Main.getObservableConfiguration().getString("frequency", "10"));
+        learnField.setText(Main.getObservableConfiguration().getString("learnRate", "0.7"));
+        layerField.setText(Main.getObservableConfiguration().getString("layers", "1024 24 1"));
+    }
+
+    void prepareButtonBindings() {
         cancelButton.disableProperty().bind(inTraining.not());
         testButton.disableProperty().bind(Bindings.or(inTraining, newNet));
         trainButton.disableProperty().bind(inTraining);
+    }
+
+    void prepareChartStuff() {
         xAxis = new NumberAxis();
         xAxis.setForceZeroInRange(false);
         yAxis = new NumberAxis();
@@ -121,18 +153,30 @@ public class NetCreateTrainController {
         series.setName("MSE Flow");
         absoluteMin = new XYChart.Series<>();
         absoluteMin.setName("Lowest Value");
+        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getLowerBound(), minValueOfSeries));
+        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getUpperBound(), minValueOfSeries));
         lineChart.getData().addAll(series, absoluteMin);
         lineChart.setPrefWidth(650);
         minValueOfSeries = Float.MAX_VALUE;
     }
 
     @FXML
-    void loadDataset(ActionEvent event) {
+    void loadTrain(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File tmp = fileChooser.showOpenDialog(Main.getMainWindow());
         if(tmp != null && tmp.exists()) {
-            datasetPath = tmp;
-            trainField.setText(datasetPath.getAbsolutePath());
+            trainPath = tmp;
+            trainField.setText(trainPath.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    void loadTest() {
+        FileChooser fileChooser = new FileChooser();
+        File tmp = fileChooser.showOpenDialog(Main.getMainWindow());
+        if(tmp != null && tmp.exists()) {
+            testPath = tmp;
+            testField.setText(testPath.getAbsolutePath());
         }
     }
 
@@ -185,6 +229,8 @@ public class NetCreateTrainController {
             Thread thread = new Thread(new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
+                    absoluteMin.getNode().setStyle("-fx-stroke: #479bdd; -fx-border-color: #479bdd; -fx-background-color: #479bdd");
+                    consoleArea.setText("");
                     train = new ProcessBuilder(getArguments()).redirectErrorStream(true).start();
                     inTraining.setValue(true);
                     InputStreamReader reader = new InputStreamReader(train.getInputStream());
@@ -206,14 +252,15 @@ public class NetCreateTrainController {
 
                                     if (series.getData().get(series.getData().size() -1).getYValue().floatValue() < minValueOfSeries) {
                                         minValueOfSeries = series.getData().get(series.getData().size() -1).getYValue().floatValue();
-                                        absoluteMin.getData().clear();
-                                        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getLowerBound(), minValueOfSeries));
-                                        absoluteMin.getData().add(new XYChart.Data<Number, Number>(xAxis.getUpperBound(), minValueOfSeries));
                                         currentMSELabel.setText(String.format(
                                                 "Current Lowest MSE: %s",
                                                 minValueOfSeries
                                         ));
+                                        absoluteMin.getData().get(0).setYValue(minValueOfSeries);
+                                        absoluteMin.getData().get(1).setYValue(minValueOfSeries);
                                     }
+                                    absoluteMin.getData().get(0).setXValue(series.getData().get(0).getXValue());
+                                    absoluteMin.getData().get(1).setXValue(series.getData().get(series.getData().size() - 1).getXValue());
 
                                     for(XYChart.Data<Number, Number> d : series.getData()) {
                                         if(yAxis.getLowerBound() > d.getYValue().doubleValue()) {
@@ -224,9 +271,7 @@ public class NetCreateTrainController {
                             });
                         }
                     }
-                    inTraining.setValue(false);
-                    minValueOfSeries = Float.MAX_VALUE;
-                    currentMSELabel.setText("Current Lowest MSE: Infinite");
+                    cleanUp("Finished the training.");
                     return null;
                 }
             });
@@ -242,8 +287,7 @@ public class NetCreateTrainController {
     void cancelTraining() {
         if(train != null && InfoWindow.showConfirm("Need Confirmation", "Do you really want to cancel the training? All progress will be lost.", Main.getMainWindow())) {
             train.destroyForcibly();
-            train = null;
-            inTraining.setValue(false);
+            cleanUp("Canceled by user!");
         }
     }
 
@@ -256,19 +300,19 @@ public class NetCreateTrainController {
         }
     }
 
-    private boolean allConditionsMet() {
-        boolean pathsProvided = fcnnPath != null && datasetPath != null && networkPath != null;
+    boolean allConditionsMet() {
+        boolean pathsProvided = fcnnPath != null && trainPath != null && networkPath != null;
         boolean fieldsFilled = !mseField.getText().equals("") && !epochesField.getText().equals("") && !frequencyField.getText().equals("");
         boolean layersSetWhenNew = !newNet.get() || !layerField.getText().equals("");
         return pathsProvided && fieldsFilled && layersSetWhenNew;
     }
 
-    private ArrayList<String> getArguments() {
+    ArrayList<String> getArguments() {
         ArrayList<String> result = new ArrayList<>();
         result.add(fcnnPath.getAbsolutePath());
         result.add(String.format("-r %s", learnField.getText()));
         result.add(String.format("-n %s", networkPath.getAbsolutePath()));
-        result.add(String.format("-t %s", datasetPath.getAbsolutePath()));
+        result.add(String.format("-t %s", trainPath.getAbsolutePath()));
         if(newNet.get()) {
             for (String layer : layerField.getText().split(" ")) {
                 result.add(String.format("-l %s", layer));
@@ -280,4 +324,26 @@ public class NetCreateTrainController {
         return result;
     }
 
+    void cleanUp(String consoleMessage) {
+        consoleArea.appendText(consoleMessage + "\n");
+        currentMSELabel.setText("Current Lowest MSE: Infinite");
+        inTraining.setValue(false);
+        series.getData().clear();
+        minValueOfSeries = Float.MAX_VALUE;
+        train = null;
+    }
+
+    @FXML
+    void saveConfig() {
+        Main.getObservableConfiguration().setStringProperty("networkPath", networkField.getText());
+        Main.getObservableConfiguration().setStringProperty("trainingPath", trainField.getText());
+        Main.getObservableConfiguration().setStringProperty("testPath", testField.getText());
+        Main.getObservableConfiguration().setStringProperty("fcnnPath", fcnnField.getText());
+        Main.getObservableConfiguration().setStringProperty("mse", mseField.getText());
+        Main.getObservableConfiguration().setStringProperty("epoches", epochesField.getText());
+        Main.getObservableConfiguration().setStringProperty("frequency", frequencyField.getText());
+        Main.getObservableConfiguration().setStringProperty("learnRate", learnField.getText());
+        Main.getObservableConfiguration().setStringProperty("layers", layerField.getText());
+        InfoWindow.showInfo("Saved!", "Saved the configuration for future sessions!", Main.getMainWindow());
+    }
 }
