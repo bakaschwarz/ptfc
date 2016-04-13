@@ -184,4 +184,20 @@
     -fx-padding: 4 4 4 4;
 }
 
+.tab {
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: #393a3b;
+    -fx-border-width: 1;
+    -fx-border-insets: 1 1 -1 1;
+    -fx-border-color: black;
+}
+
+.tab:selected {
+    -fx-border-color: #FF8402;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+
 .default-color1.chart-series-line { -fx-stroke: #479bdd}

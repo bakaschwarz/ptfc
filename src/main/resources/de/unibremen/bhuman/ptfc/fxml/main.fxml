@@ -9,7 +9,7 @@
       <TabPane layoutX="67.0" layoutY="46.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
         <tabs>
           <Tab fx:id="classificationTab" text="Classification" />
-          <Tab fx:id="trainingGenerationTab" text="Generate FANN Training Data" />
+          <Tab fx:id="trainingGenerationTab" text="Dataset Generation" />
             <Tab fx:id="fcnnTab" text="FCNN Training" />
         </tabs>
       </TabPane>
