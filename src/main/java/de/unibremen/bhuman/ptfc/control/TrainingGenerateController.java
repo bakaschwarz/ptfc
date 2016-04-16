@@ -13,6 +13,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TrainingGenerateController {
 
@@ -42,9 +44,12 @@ public class TrainingGenerateController {
     @FXML
     private Button generateDataButton;
 
+    @FXML
+    private CheckBox mirrorCheck;
+
     private File outputPath;
 
-    private static String lines;
+    private static String lines, mirrorLines;
 
     private static int testCount;
 
@@ -66,6 +71,7 @@ public class TrainingGenerateController {
     @FXML
     void generateData(ActionEvent event) throws IOException {
         lines = "";
+        mirrorLines = "";
         testCount = 0;
         Service<Void> service = new Service<Void>() {
             @Override
@@ -92,6 +98,12 @@ public class TrainingGenerateController {
                                 }
                                 lines += (String.join(" ", extracted_r)) + "\n";
                                 lines += (image.getStatus() == Status.POSITIVE ? "1" : "0") + "\n";
+                                if(mirrorCheck.isSelected()) {
+                                    ArrayList<String> reversedList = (ArrayList<String>) extracted_r.clone();
+                                    reversedList.stream().forEach(e -> e = new StringBuilder(e).reverse().toString());
+                                    mirrorLines += (String.join(" ", reversedList)) + "\n";
+                                    mirrorLines += (image.getStatus() == Status.POSITIVE ? "1" : "0") + "\n";
+                                }
                             }
                         }
                         return null;
@@ -105,6 +117,9 @@ public class TrainingGenerateController {
                 IOUtils.write("# Dataset generated with ptfc.\n", outputStream);
                 IOUtils.write(String.format("%d %d %d\n", testCount, 1024, 1), outputStream);
                 IOUtils.write(lines, outputStream);
+                if(mirrorCheck.isSelected()) {
+                    IOUtils.write(mirrorLines, outputStream);
+                }
                 outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -114,7 +129,6 @@ public class TrainingGenerateController {
             InfoWindow.showInfo("Write error!", "Failed to write training data to file!", Main.getMainWindow());
         });
         ProgressDialog progressDialog = new ProgressDialog(service);
-        //progressDialog.setIndeterminate(true);
         progressDialog.initOwner(Main.getMainWindow());
         progressDialog.initModality(Modality.APPLICATION_MODAL);
         progressDialog.setTitle("Saving dataset...");
