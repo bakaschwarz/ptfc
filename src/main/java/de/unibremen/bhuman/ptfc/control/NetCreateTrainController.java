@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -27,6 +28,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lombok.Getter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,31 +39,31 @@ import java.util.ArrayList;
 public class NetCreateTrainController {
 
     @FXML
-    private TextField networkField;
+    TextField networkField;
 
     @FXML
-    private TextField trainField;
+    TextField trainField;
 
     @FXML
-    private TextField testField;
+    TextField testField;
 
     @FXML
-    private TextField mseField;
+    TextField mseField;
 
     @FXML
-    private TextField epochesField;
+    TextField epochesField;
 
     @FXML
-    private TextField frequencyField;
+    TextField frequencyField;
 
     @FXML
-    private TextField layerField;
+    TextField layerField;
 
     @FXML
-    private TextField fcnnField;
+    TextField fcnnField;
 
     @FXML
-    private TextField learnField;
+    TextField learnField;
 
     @FXML
     private TextArea consoleArea;
@@ -107,8 +109,12 @@ public class NetCreateTrainController {
 
     private float minValueOfSeries;
 
+    @Getter
+    private static NetCreateTrainController netCreateTrainController;
+
     @FXML
     void initialize() {
+        netCreateTrainController = this;
         inTraining = new SimpleBooleanProperty(false);
         newNet = new SimpleBooleanProperty();
         loadFromConfig();
@@ -153,7 +159,6 @@ public class NetCreateTrainController {
         yAxis.setForceZeroInRange(false);
         lineChart = new LineChart<>(xAxis, yAxis);
         chartBox.getChildren().add(lineChart);
-        lineChart.setPrefWidth(650);
     }
 
     void prepareNewChart() {
@@ -351,19 +356,5 @@ public class NetCreateTrainController {
         currentMSELabel.setText("Current Lowest MSE: Infinite");
         inTraining.setValue(false);
         train = null;
-    }
-
-    @FXML
-    void saveConfig() {
-        Main.getObservableConfiguration().setStringProperty("networkPath", networkField.getText());
-        Main.getObservableConfiguration().setStringProperty("trainingPath", trainField.getText());
-        Main.getObservableConfiguration().setStringProperty("testPath", testField.getText());
-        Main.getObservableConfiguration().setStringProperty("fcnnPath", fcnnField.getText());
-        Main.getObservableConfiguration().setStringProperty("mse", mseField.getText());
-        Main.getObservableConfiguration().setStringProperty("epoches", epochesField.getText());
-        Main.getObservableConfiguration().setStringProperty("frequency", frequencyField.getText());
-        Main.getObservableConfiguration().setStringProperty("learnRate", learnField.getText());
-        Main.getObservableConfiguration().setStringProperty("layers", layerField.getText());
-        InfoWindow.showInfo("Saved!", "Saved the configuration for future sessions!", Main.getMainWindow());
     }
 }

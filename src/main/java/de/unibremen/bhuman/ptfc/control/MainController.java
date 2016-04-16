@@ -1,5 +1,6 @@
 package de.unibremen.bhuman.ptfc.control;
 
+import de.unibremen.bhuman.ptfc.InfoWindow;
 import de.unibremen.bhuman.ptfc.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,5 +29,21 @@ public class MainController {
 
         FXMLLoader fxmlLoader2 = new FXMLLoader(Main.class.getResource("fxml/nettrain.fxml"));
         fcnnTab.setContent(fxmlLoader2.load());
+    }
+
+
+    @FXML
+    void saveConfig() {
+        NetCreateTrainController nctc = NetCreateTrainController.getNetCreateTrainController();
+        Main.getObservableConfiguration().setStringProperty("networkPath", nctc.networkField.getText());
+        Main.getObservableConfiguration().setStringProperty("trainingPath", nctc.trainField.getText());
+        Main.getObservableConfiguration().setStringProperty("testPath", nctc.testField.getText());
+        Main.getObservableConfiguration().setStringProperty("fcnnPath", nctc.fcnnField.getText());
+        Main.getObservableConfiguration().setStringProperty("mse", nctc.mseField.getText());
+        Main.getObservableConfiguration().setStringProperty("epoches", nctc.epochesField.getText());
+        Main.getObservableConfiguration().setStringProperty("frequency", nctc.frequencyField.getText());
+        Main.getObservableConfiguration().setStringProperty("learnRate", nctc.learnField.getText());
+        Main.getObservableConfiguration().setStringProperty("layers", nctc.layerField.getText());
+        InfoWindow.showInfo("Saved!", "Saved the configuration for future sessions!", Main.getMainWindow());
     }
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.NetCreateTrainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.NetCreateTrainController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="267.0" layoutY="200.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -96,11 +96,6 @@
                               <TextField fx:id="learnField" text="0.7" GridPane.columnIndex="4" />
                            </children>
                         </GridPane>
-                     </children>
-                  </HBox>
-                  <HBox alignment="TOP_RIGHT" prefWidth="200.0">
-                     <children>
-                        <Button minWidth="200.0" mnemonicParsing="false" onAction="#saveConfig" prefWidth="200.0" text="Save Configuration" />
                      </children>
                   </HBox>
                </children>
