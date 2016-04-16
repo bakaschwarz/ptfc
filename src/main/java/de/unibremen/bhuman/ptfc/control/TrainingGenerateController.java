@@ -113,6 +113,8 @@ public class TrainingGenerateController {
         };
         service.setOnSucceeded(event1 -> {
             try {
+                if(mirrorCheck.isSelected())
+                    testCount *= 2;
                 FileOutputStream outputStream = new FileOutputStream(outputPath.getAbsolutePath() + File.separator + nameField.getText());
                 IOUtils.write("# Dataset generated with ptfc.\n", outputStream);
                 IOUtils.write(String.format("%d %d %d\n", testCount, 1024, 1), outputStream);
