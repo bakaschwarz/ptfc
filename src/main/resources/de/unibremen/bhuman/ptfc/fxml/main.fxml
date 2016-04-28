@@ -5,10 +5,11 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="850.0" prefWidth="1210.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.MainController">
+<AnchorPane prefHeight="850.0" prefWidth="1210.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.MainController">
    <children>
       <TabPane layoutX="67.0" layoutY="46.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
         <tabs>
+            <Tab fx:id="manualTab" text="Manual Extraction" />
           <Tab fx:id="classificationTab" text="Classification" />
           <Tab fx:id="trainingGenerationTab" text="Dataset Generation" />
             <Tab fx:id="fcnnTab" text="FCNN Training" />

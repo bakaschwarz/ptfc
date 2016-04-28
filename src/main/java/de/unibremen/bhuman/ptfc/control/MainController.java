@@ -20,6 +20,9 @@ public class MainController {
     private Tab fcnnTab;
 
     @FXML
+    private Tab manualTab;
+
+    @FXML
     void initialize() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/classify.fxml"));
         classificationTab.setContent(fxmlLoader.load());
@@ -29,6 +32,9 @@ public class MainController {
 
         FXMLLoader fxmlLoader2 = new FXMLLoader(Main.class.getResource("fxml/nettrain.fxml"));
         fcnnTab.setContent(fxmlLoader2.load());
+
+        FXMLLoader fxmlLoader3 = new FXMLLoader(Main.class.getResource("fxml/manualextraction.fxml"));
+        manualTab.setContent(fxmlLoader3.load());
     }
 
 

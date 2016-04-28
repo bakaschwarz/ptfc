@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.ManualController">
+   <children>
+      <VBox layoutX="309.0" layoutY="184.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <HBox VBox.vgrow="SOMETIMES">
+               <children>
+                  <VBox spacing="5.0" styleClass="container">
+                     <children>
+                        <Label styleClass="title-label" text="Imported Images" />
+                        <Separator prefWidth="200.0" />
+                        <ListView fx:id="importView" VBox.vgrow="SOMETIMES" />
+                        <HBox alignment="CENTER_RIGHT" spacing="5.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#loadImport" text="Load" />
+                              <Button mnemonicParsing="false" text="Clear List" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="importantBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="container" HBox.hgrow="SOMETIMES">
+                     <children>
+                        <ScrollPane VBox.vgrow="SOMETIMES">
+                           <content>
+                              <StackPane fx:id="stack" maxHeight="500.0" maxWidth="500.0" />
+                           </content>
+                        </ScrollPane>
+                        <Button mnemonicParsing="false" text="Export" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0" styleClass="container">
+                     <children>
+                        <Label styleClass="title-label" text="Selected for Export" />
+                        <Separator prefWidth="200.0" />
+                        <ListView fx:id="exportView" VBox.vgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button mnemonicParsing="false" text="Clear List" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

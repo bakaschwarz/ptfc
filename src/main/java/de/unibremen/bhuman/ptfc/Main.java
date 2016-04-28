@@ -36,7 +36,6 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         commandHistory = new CommandHistory(1024);
-        System.out.println("Bla");
         prepareConfiguration();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
         primaryStage.setScene(new Scene(fxmlLoader.load()));
@@ -58,7 +57,7 @@ public class Main extends Application{
     }
 
     private static void prepareConfiguration() throws IOException, ConfigurationException {
-        File configFile = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "ptfc.properties");
+        File configFile = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + ".properties");
         if(!configFile.exists()) {
             FileUtils.touch(configFile);
             observableConfiguration = new ObservableConfiguration(configFile, true);
