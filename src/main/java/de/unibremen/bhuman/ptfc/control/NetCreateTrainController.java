@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -95,9 +94,9 @@ public class NetCreateTrainController {
 
     private String line;
 
-    private Process train;
+    private Process traintest;
 
-    private SimpleBooleanProperty inTraining;
+    private SimpleBooleanProperty inTrainingTest;
 
     private XYChart.Series<Number, Number> series;
 
@@ -115,7 +114,7 @@ public class NetCreateTrainController {
     @FXML
     void initialize() {
         netCreateTrainController = this;
-        inTraining = new SimpleBooleanProperty(false);
+        inTrainingTest = new SimpleBooleanProperty(false);
         newNet = new SimpleBooleanProperty();
         loadFromConfig();
         prepareButtonBindings();
@@ -144,9 +143,9 @@ public class NetCreateTrainController {
     }
 
     void prepareButtonBindings() {
-        cancelButton.disableProperty().bind(inTraining.not());
-        testButton.disableProperty().bind(Bindings.or(inTraining, newNet));
-        trainButton.disableProperty().bind(inTraining);
+        cancelButton.disableProperty().bind(inTrainingTest.not());
+        testButton.disableProperty().bind(Bindings.or(inTrainingTest, newNet));
+        trainButton.disableProperty().bind(inTrainingTest);
     }
 
     void prepareChartStuff() {
@@ -258,11 +257,11 @@ public class NetCreateTrainController {
             Thread thread = new Thread(new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    train = new ProcessBuilder(getArguments()).redirectErrorStream(true).start();
-                    inTraining.setValue(true);
-                    InputStreamReader reader = new InputStreamReader(train.getInputStream());
+                    traintest = new ProcessBuilder(getTrainArguments()).redirectErrorStream(true).start();
+                    inTrainingTest.setValue(true);
+                    InputStreamReader reader = new InputStreamReader(traintest.getInputStream());
                     BufferedReader bufferedReader = new BufferedReader(reader);
-                    while(train.isAlive()) {
+                    while(traintest.isAlive()) {
                         if ((line = bufferedReader.readLine()) != null) {
                             Platform.runLater(() -> {
                                 consoleArea.appendText(line + "\n");
@@ -298,7 +297,7 @@ public class NetCreateTrainController {
                             });
                         }
                     }
-                    Platform.runLater(() -> cleanUp("Finished the training."));
+                    Platform.runLater(() -> cleanUp("Process finished!"));
                     return null;
                 }
             });
@@ -312,16 +311,37 @@ public class NetCreateTrainController {
 
     @FXML
     void cancelTraining() {
-        if(train != null && InfoWindow.showConfirm("Need Confirmation", "Do you really want to cancel the training? All progress will be lost.", Main.getMainWindow())) {
-            train.destroyForcibly();
+        if(traintest != null && InfoWindow.showConfirm("Need Confirmation", "Do you really want to cancel the training? All progress will be lost.", Main.getMainWindow())) {
+            traintest.destroyForcibly();
             cleanUp("Canceled by user!");
         }
     }
 
     @FXML
     void testNet() {
-        if(allConditionsMet()) {
-
+        if(testConditionsMet()) {
+            consoleArea.setText("");
+            Thread thread = new Thread(new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    traintest = new ProcessBuilder(getTestArguments()).redirectErrorStream(true).start();
+                    inTrainingTest.set(true);
+                    InputStreamReader reader = new InputStreamReader(traintest.getInputStream());
+                    BufferedReader bufferedReader = new BufferedReader(reader);
+                    while(traintest.isAlive()) {
+                        if ((line = bufferedReader.readLine()) != null) {
+                            Platform.runLater(() -> {
+                                consoleArea.appendText(line + "\n");
+                            });
+                        }
+                    }
+                    Platform.runLater(() -> cleanUp("Process finished!"));
+                    return null;
+                }
+            });
+            thread.setUncaughtExceptionHandler((t, e) -> e.printStackTrace());
+            thread.setDaemon(true);
+            thread.start();
         } else {
             InfoWindow.showInfo("Error", "You did not provide all information needed.", Main.getMainWindow());
         }
@@ -334,7 +354,13 @@ public class NetCreateTrainController {
         return pathsProvided && fieldsFilled && layersSetWhenNew;
     }
 
-    ArrayList<String> getArguments() {
+    boolean testConditionsMet() {
+        boolean pathProvided = fcnnPath != null && networkPath != null && testPath != null;
+        boolean noNewNet = !newNet.getValue();
+        return pathProvided && noNewNet;
+    }
+
+    ArrayList<String> getTrainArguments() {
         ArrayList<String> result = new ArrayList<>();
         result.add(fcnnPath.getAbsolutePath());
         result.add(String.format("-r %s", learnField.getText()));
@@ -351,10 +377,20 @@ public class NetCreateTrainController {
         return result;
     }
 
+    ArrayList<String> getTestArguments() {
+        ArrayList<String> result = new ArrayList<>();
+        result.add(fcnnPath.getAbsolutePath());
+        result.add(String.format("-n %s", networkPath.getAbsolutePath()));
+        result.add(String.format("-t %s", trainPath.getAbsolutePath()));
+        result.add(String.format("--test"));
+        return result;
+    }
+
     void cleanUp(String consoleMessage) {
         consoleArea.appendText(consoleMessage + "\n");
         currentMSELabel.setText("Current Lowest MSE: Infinite");
-        inTraining.setValue(false);
-        train = null;
+        inTrainingTest.setValue(false);
+        traintest = null;
+        newNet.set(false);
     }
 }
