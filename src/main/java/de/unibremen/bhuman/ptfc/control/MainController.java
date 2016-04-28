@@ -4,6 +4,7 @@ import de.unibremen.bhuman.ptfc.InfoWindow;
 import de.unibremen.bhuman.ptfc.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 
 import java.io.IOException;
@@ -11,16 +12,16 @@ import java.io.IOException;
 public class MainController {
 
     @FXML
-    private Tab classificationTab;
+    private ScrollPane classificationTab;
 
     @FXML
-    private Tab trainingGenerationTab;
+    private ScrollPane trainingGenerationTab;
 
     @FXML
-    private Tab fcnnTab;
+    private ScrollPane fcnnTab;
 
     @FXML
-    private Tab manualTab;
+    private ScrollPane manualTab;
 
     @FXML
     void initialize() throws IOException {

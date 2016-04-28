@@ -125,7 +125,12 @@ public class NetCreateTrainController {
         File tmp;
         networkField.setText(Main.getObservableConfiguration().getString("networkPath", ""));
         tmp = new File(networkField.getText());
-        networkPath = tmp.exists() ? tmp : null;
+        if (!networkField.getText().equals("")) {
+            networkPath = tmp;
+            if(!tmp.exists()) {
+                newNet.set(true);
+            }
+        }
         trainField.setText(Main.getObservableConfiguration().getString("trainingPath", ""));
         tmp = new File(trainField.getText());
         trainPath = tmp.exists() ? tmp : null;
@@ -313,7 +318,9 @@ public class NetCreateTrainController {
     void cancelTraining() {
         if(traintest != null && InfoWindow.showConfirm("Need Confirmation", "Do you really want to cancel the training? All progress will be lost.", Main.getMainWindow())) {
             traintest.destroyForcibly();
+            boolean wasNetNet = newNet.getValue(); //TODO That is really hacky
             cleanUp("Canceled by user!");
+            newNet.set(wasNetNet);
         }
     }
 

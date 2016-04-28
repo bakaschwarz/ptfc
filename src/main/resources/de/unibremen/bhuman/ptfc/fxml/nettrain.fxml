@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.NetCreateTrainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unibremen.bhuman.ptfc.control.NetCreateTrainController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="267.0" layoutY="200.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -68,7 +68,7 @@
                                  </children>
                               </HBox>
                               <Label text="Test Dataset Path:" GridPane.rowIndex="2" />
-                              <TextField fx:id="testField" promptText="/path/to/dataset" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="testField" editable="false" promptText="/path/to/dataset" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Button mnemonicParsing="false" onAction="#loadTest" text="Load" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>

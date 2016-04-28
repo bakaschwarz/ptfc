@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,10 +10,22 @@
    <children>
       <TabPane layoutX="67.0" layoutY="46.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
         <tabs>
-            <Tab fx:id="manualTab" text="Manual Extraction" />
-          <Tab fx:id="classificationTab" text="Classification" />
-          <Tab fx:id="trainingGenerationTab" text="Dataset Generation" />
-            <Tab fx:id="fcnnTab" text="FCNN Training" />
+            <Tab disable="true" text="Manual Extraction">
+               <content>
+                  <ScrollPane fx:id="manualTab" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
+          <Tab text="Classification">
+               <content>
+                  <ScrollPane fx:id="classificationTab" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
+          <Tab text="Dataset Generation">
+               <content>
+                  <ScrollPane fx:id="trainingGenerationTab" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
+            <Tab text="FCNN Training">
+               <content>
+                  <ScrollPane fx:id="fcnnTab" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
         </tabs>
       </TabPane>
       <Button mnemonicParsing="false" onAction="#saveConfig" text="Save Configuration" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="9.0" />
